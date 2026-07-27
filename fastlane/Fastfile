@@ -48,7 +48,7 @@ lane :set_version do
         # Set version number to .jazzy.yml
         if File.exist?("../.jazzy.yml")
             sh("sed", "-i", "", "s/version: [0-9]*\\.[0-9]*\\.[0-9]*/version: #{new_app_version}/g", "../.jazzy.yml")
-            sh("sed", "-i", "", "s|root_url: https://github.com/gumob/TLDExtractSwift/tree/[0-9]*\\.[0-9]*\\.[0-9]*/docs/|root_url: https://github.com/gumob/TLDExtractSwift/tree/#{new_app_version}/docs/|g", "../.jazzy.yml")
+            sh("sed", "-i", "", "s|root_url: https://github.com/futamura/TLDExtractSwift/tree/[0-9]*\\.[0-9]*\\.[0-9]*/docs/|root_url: https://github.com/futamura/TLDExtractSwift/tree/#{new_app_version}/docs/|g", "../.jazzy.yml")
         else
             UI.error("No such file or directory: .jazzy.yml")
         end
@@ -85,7 +85,7 @@ lane :bump_version do
     # Set version number to .jazzy.yml
     if File.exist?("../.jazzy.yml")
         sh("sed", "-i", "", "s/version: [0-9]*\\.[0-9]*\\.[0-9]*/version: #{new_app_version}/g", "../.jazzy.yml")
-        sh("sed", "-i", "", "s|root_url: https://github.com/gumob/TLDExtractSwift/tree/[0-9]*\\.[0-9]*\\.[0-9]*/docs/|root_url: https://github.com/gumob/TLDExtractSwift/tree/#{new_app_version}/docs/|g", "../.jazzy.yml")
+        sh("sed", "-i", "", "s|root_url: https://github.com/futamura/TLDExtractSwift/tree/[0-9]*\\.[0-9]*\\.[0-9]*/docs/|root_url: https://github.com/futamura/TLDExtractSwift/tree/#{new_app_version}/docs/|g", "../.jazzy.yml")
     else
         UI.error("No such file or directory: .jazzy.yml")
     end
