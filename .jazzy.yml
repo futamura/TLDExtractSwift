@@ -2,12 +2,12 @@ module: TLDExtractSwift
 version: 3.0.0
 
 author: Kojiro Futamura
-author_url: https://github.com/gumob
-github_url: https://github.com/gumob/TLDExtractSwift
+author_url: https://github.com/futamura
+github_url: https://github.com/futamura/TLDExtractSwift
 # copyright: 'Copyright © 2024 Kojiro Futamura. All rights reserved.'
 
-source_host_url: https://github.com/gumob/TLDExtractSwift
-root_url: https://github.com/gumob/TLDExtractSwift/tree/3.0.0/docs/
+source_host_url: https://github.com/futamura/TLDExtractSwift
+root_url: https://github.com/futamura/TLDExtractSwift/tree/3.0.0/docs/
 
 readme: "README.md"
 
