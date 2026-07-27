@@ -1,8 +1,8 @@
-[![Swift Package Manager compatible](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange)](https://github.com/gumob/TLDExtractSwift)
+[![Swift Package Manager compatible](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange)](https://github.com/futamura/TLDExtractSwift)
 ![Carthage](https://img.shields.io/badge/Carthage-Compatible-blue)
 [![Cocoapods Version](https://img.shields.io/cocoapods/v/TLDExtractSwift.svg)](https://cocoapods.org/pods/TLDExtractSwift)
 [![Cocoapods Platform](https://img.shields.io/cocoapods/p/TLDExtractSwift.svg)](https://cocoadocs.org/docsets/TLDExtract)
-[![Build](https://github.com/gumob/TLDExtractSwift/actions/workflows/main.yml/badge.svg)](https://github.com/gumob/TLDExtractSwift/actions/workflows/main.yml)
+[![Build](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml/badge.svg)](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/gumob/TLDExtractSwift/branch/master/graph/badge.svg)](https://codecov.io/gh/gumob/TLDExtractSwift)
 ![Language](https://img.shields.io/badge/Language-Swift%205.0-orange.svg)
 ![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)
@@ -14,7 +14,7 @@
 
 Domain names are the unique, human-readable Internet addresses of websites. They are made up of three parts: a top-level domain (a.k.a. TLD), a second-level domain name, and an optional subdomain.
 
-<img src="https://raw.githubusercontent.com/gumob/TLDExtractSwift/main/Metadata/domain-diagram.webp" alt="drawing" width="100%" style="width:100%; max-width: 100%;"/>
+<img src="https://raw.githubusercontent.com/futamura/TLDExtractSwift/main/Metadata/domain-diagram.webp" alt="drawing" width="100%" style="width:100%; max-width: 100%;"/>
 
 ## Changes in 3.0.0
 
@@ -61,7 +61,7 @@ Add the following to your `Package.swift` file.
 
     ```swift
     dependencies: [
-        .package(url: "https://github.com/gumob/TLDExtractSwift.git", .upToNextMajor(from: "3.0.0"))
+        .package(url: "https://github.com/futamura/TLDExtractSwift.git", .upToNextMajor(from: "3.0.0"))
     ]
     ```
 
@@ -69,7 +69,7 @@ Add the following to your `Package.swift` file.
 
     ```swift
     dependencies: [
-        .package(url: "https://github.com/gumob/TLDExtractSwift.git", .upToNextMajor(from: "2.1.1"))
+        .package(url: "https://github.com/futamura/TLDExtractSwift.git", .upToNextMajor(from: "2.1.1"))
     ]
     ```
 
@@ -80,22 +80,22 @@ Add the following to your `Cartfile` and follow [these instructions](https://git
 - macOS, iOS, tvOS, watchOS, visionOS, and Swift 5
 
     ```
-    github "gumob/TLDExtractSwift" ~> 3.0
+    github "futamura/TLDExtractSwift" ~> 3.0
     ```
 - macOS, iOS, tvOS, and Swift 5
 
     ```
-    github "gumob/TLDExtractSwift" ~> 2.0
+    github "futamura/TLDExtractSwift" ~> 2.0
     ```
 - macOS, iOS, tvOS, and Swift 4
 
     ```
-    github "gumob/TLDExtractSwift" ~> 1.0
+    github "futamura/TLDExtractSwift" ~> 1.0
     ```
 
 Do not forget to include Punycode.framework. Otherwise it will fail to build the application.<br/>
 
-<img src="https://raw.githubusercontent.com/gumob/TLDExtractSwift/main/Metadata/carthage-xcode-config.jpg" alt="drawing" width="480" style="width:100%; max-width: 480px;"/>
+<img src="https://raw.githubusercontent.com/futamura/TLDExtractSwift/main/Metadata/carthage-xcode-config.jpg" alt="drawing" width="480" style="width:100%; max-width: 480px;"/>
 
 ### CocoaPods
 
@@ -119,7 +119,7 @@ To integrate TLDExtract into your project, add the following to your `Podfile`.
 
 ## Usage
 
-Full documentation is available at [https://gumob.github.io/TLDExtractSwift/swiftdoc/](https://gumob.github.io/TLDExtractSwift/swiftdoc/).
+Full documentation is available at [https://futamura.github.io/TLDExtractSwift/swiftdoc/](https://futamura.github.io/TLDExtractSwift/swiftdoc/).
 
 ### Initialization
 
@@ -148,7 +148,7 @@ let extractor = try! TLDExtract(useFrozenData: true)
 Extract an url:
 
 ```swift
-let urlString: String = "https://www.github.com/gumob/TLDExtract"
+let urlString: String = "https://www.github.com/futamura/TLDExtract"
 guard let result: TLDResult = extractor.parse(urlString) else { return }
 
 print(result.rootDomain)        // Optional("github.com")
@@ -224,7 +224,7 @@ print(result.secondLevelDomain) // Optional("寿司")
 print(result.subDomain)         // Optional("www.ラーメン")
 ```
 
-Encode an unicode url by using [`Punycode`](https://github.com/gumob/Punycode) Framework:
+Encode an unicode url by using [`Punycode`](https://github.com/futamura/Punycode) Framework:
 
 ```swift
 import Punycode
