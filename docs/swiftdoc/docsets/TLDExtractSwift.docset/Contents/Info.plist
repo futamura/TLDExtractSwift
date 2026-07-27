@@ -17,6 +17,6 @@
     <key>DashDocSetFamily</key>
       <string>dashtoc</string>
     <key>DashDocSetFallbackURL</key>
-      <string>https://github.com/gumob/TLDExtractSwift/tree/3.0.0/docs/</string>
+      <string>https://github.com/futamura/TLDExtractSwift/tree/3.0.0/docs/</string>
   </dict>
 </plist>
