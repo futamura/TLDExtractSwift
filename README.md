@@ -233,14 +233,14 @@ print(result.secondLevelDomain) // Optional("寿司")
 print(result.subDomain)         // Optional("www.ラーメン")
 ```
 
-Encode an unicode url by using [`Punycode`](https://github.com/futamura/PunycodeSwift) Framework:
+Encode a unicode hostname by using the [`Punycode`](https://github.com/futamura/PunycodeSwift) Framework. Note that `idnaEncoded` operates on hostnames — apply it to the host part only, not to a full URL including the scheme:
 
 ```swift
 import Punycode
 
-let urlString: String = "http://www.ラーメン.寿司.co.jp".idnaEncoded!
-let url: URL = URL(string: urlString)
-print(urlString)                // http://www.xn--4dkp5a8a.xn--sprr0q.co.jp
+let hostname: String = "www.ラーメン.寿司.co.jp".idnaEncoded!
+let url: URL = URL(string: "http://" + hostname)!
+print(hostname)                 // www.xn--4dkp5a8a.xn--sprr0q.co.jp
 
 guard let result: TLDResult = extractor.parse(url) else { return }
 
