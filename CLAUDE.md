@@ -73,4 +73,6 @@ Tests live in `Tests/TLDExtractSwiftTests.swift` (single XCTest file; SPM test t
 - Branch flow: work on `develop`, PR into `main`.
 - CI (`.github/workflows/main.yml`) runs on push and pull request to `main`/`develop`: swift-format lint → per-platform xcodebuild tests (simulator devices resolved at runtime via `simctl`) → SPM (macOS) → pod lib lint. It does not release. Carthage builds are not CI-verified (best-effort compatibility via the Xcode project). The `CI Success` job aggregates all results and is the required status check on `main`.
 - Docs: currently jazzy-generated into a committed `docs/` directory, served by GitHub Pages via `.github/workflows/static.yml` on push to `main`.
-- CocoaPods trunk becomes read-only on 2026-12-02; CocoaPods distribution ends then.
+- Releasing is a separate, explicit step: push a bare version tag (e.g. `3.0.1`) matching `MARKETING_VERSION`. `.github/workflows/release.yml` then verifies the tag against the project version, creates a GitHub Release (notes taken from the tag's `CHANGELOG.md` section, falling back to generated notes), and pushes to CocoaPods trunk.
+- Version tags are immutable: the release workflow fails if the tag or trunk version already exists. To re-release, bump the version — never delete/re-push a tag.
+- CocoaPods trunk becomes read-only on 2026-12-02; CocoaPods distribution ends then. After that date, remove the `lint_cocoapods` job from `main.yml` and the `publish_cocoapods` job from `release.yml`.

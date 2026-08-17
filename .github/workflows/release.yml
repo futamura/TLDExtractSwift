@@ -1,0 +1,86 @@
+# Publishes the library when a version tag is pushed: creates a GitHub Release
+# and pushes to CocoaPods trunk.
+# Tags are immutable: pushing a tag for a version that is already published fails
+# instead of replacing the existing release. Bump the version and tag again instead.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+
+env:
+  project_name: TLDExtractSwift
+  podspec_name: TLDExtractSwift
+
+jobs:
+  verify:
+    name: Verify tag matches project version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify tag matches project version
+        run: |
+          set -eo pipefail
+          current_version=$(grep -m1 'MARKETING_VERSION' "${{ env.project_name }}.xcodeproj/project.pbxproj" | sed 's/.*= //;s/;//')
+          echo "Project version: ${current_version} / Tag: ${GITHUB_REF_NAME}"
+          if [[ "${current_version}" != "${GITHUB_REF_NAME}" ]]; then
+            echo "Error: Tag (${GITHUB_REF_NAME}) does not match MARKETING_VERSION (${current_version})."
+            exit 1
+          fi
+
+  github_release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: verify
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract release notes from CHANGELOG.md
+        run: |
+          set -eo pipefail
+          awk -v ver="${GITHUB_REF_NAME}" '
+            $0 ~ "^## \\[" ver "\\]" { found = 1; next }
+            found && /^## \[/ { exit }
+            found { print }
+          ' CHANGELOG.md | sed -e '/./,$!d' > release_notes.md
+          cat release_notes.md
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eo pipefail
+          ### gh release create fails if the release already exists; releases are immutable.
+          if [[ -s release_notes.md ]]; then
+            gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" --notes-file release_notes.md --verify-tag
+          else
+            echo "No CHANGELOG section for ${GITHUB_REF_NAME}; falling back to generated notes."
+            gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" --generate-notes --verify-tag
+          fi
+
+  publish_cocoapods:
+    name: Publish to CocoaPods
+    runs-on: macos-latest
+    needs: verify
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish to CocoaPods trunk
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: |
+          set -eo pipefail
+          ### Never republish an existing version; released versions are immutable.
+          if pod trunk info ${{ env.podspec_name }} | grep -q "${GITHUB_REF_NAME}"; then
+            echo "Error: Version ${GITHUB_REF_NAME} already exists on CocoaPods trunk. Bump the version instead of republishing."
+            exit 1
+          fi
+          pod trunk push ${{ env.podspec_name }}.podspec --allow-warnings
