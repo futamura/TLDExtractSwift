@@ -1,7 +1,5 @@
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange)](https://github.com/futamura/TLDExtractSwift)
 ![Carthage](https://img.shields.io/badge/Carthage-Compatible-blue)
-[![Cocoapods Version](https://img.shields.io/cocoapods/v/TLDExtractSwift.svg)](https://cocoapods.org/pods/TLDExtractSwift)
-[![Cocoapods Platform](https://img.shields.io/cocoapods/p/TLDExtractSwift.svg)](https://cocoadocs.org/docsets/TLDExtract)
 [![Build](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml/badge.svg)](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/futamura/TLDExtractSwift/branch/main/graph/badge.svg)](https://codecov.io/gh/futamura/TLDExtractSwift)
 ![Language](https://img.shields.io/badge/Language-Swift%205.0-orange.svg)
