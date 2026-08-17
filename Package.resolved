@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "Punycode",
-        "repositoryURL": "https://github.com/gumob/PunycodeSwift.git",
+        "repositoryURL": "https://github.com/futamura/PunycodeSwift.git",
         "state": {
           "branch": null,
-          "revision": "d623c012351891002c57f5a44564272ca1353fda",
+          "revision": "30a462bdb4398ea835a3585472229e0d74b36ba5",
           "version": "3.0.0"
         }
       }
