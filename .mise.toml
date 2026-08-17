@@ -1,5 +1,5 @@
 [tools]
-ruby = "3.2.5"
+ruby = "3.4.10"
 python = "3.11.9"
 
 [env]
