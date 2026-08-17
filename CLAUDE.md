@@ -71,6 +71,6 @@ Tests live in `Tests/TLDExtractSwiftTests.swift` (single XCTest file; SPM test t
 
 - Single source of truth for the version: `MARKETING_VERSION` in `TLDExtractSwift.xcodeproj/project.pbxproj`. Never edit versions by hand — use `fastlane set_version` / `bump_version`, which also sync `TLDExtractSwift.podspec`.
 - Branch flow: work on `develop`, PR into `main`.
-- CI (`.github/workflows/main.yml`) runs on push to `main`/`develop`: swift-format lint → per-platform xcodebuild tests → SPM → Carthage → pod lib lint.
+- CI (`.github/workflows/main.yml`) runs on push and pull request to `main`/`develop`: swift-format lint → per-platform xcodebuild tests (simulator devices resolved at runtime via `simctl`) → SPM (macOS) → pod lib lint. It does not release. Carthage builds are not CI-verified (best-effort compatibility via the Xcode project). The `CI Success` job aggregates all results and is the required status check on `main`.
 - Docs: currently jazzy-generated into a committed `docs/` directory, served by GitHub Pages via `.github/workflows/static.yml` on push to `main`.
 - CocoaPods trunk becomes read-only on 2026-12-02; CocoaPods distribution ends then.
