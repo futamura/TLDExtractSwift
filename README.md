@@ -3,7 +3,7 @@
 [![Cocoapods Version](https://img.shields.io/cocoapods/v/TLDExtractSwift.svg)](https://cocoapods.org/pods/TLDExtractSwift)
 [![Cocoapods Platform](https://img.shields.io/cocoapods/p/TLDExtractSwift.svg)](https://cocoadocs.org/docsets/TLDExtract)
 [![Build](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml/badge.svg)](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml)
-[![codecov](https://codecov.io/gh/futamura/TLDExtractSwift/branch/master/graph/badge.svg)](https://codecov.io/gh/futamura/TLDExtractSwift)
+[![codecov](https://codecov.io/gh/futamura/TLDExtractSwift/branch/main/graph/badge.svg)](https://codecov.io/gh/futamura/TLDExtractSwift)
 ![Language](https://img.shields.io/badge/Language-Swift%205.0-orange.svg)
 ![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)
 
@@ -53,6 +53,11 @@ Domain names are the unique, human-readable Internet addresses of websites. They
 
 ## Installation
 
+Swift Package Manager is the recommended way to install TLDExtractSwift.
+
+> [!IMPORTANT]
+> The CocoaPods trunk becomes permanently read-only on December 2, 2026. Versions released after that date will be available via Swift Package Manager (and Carthage on a best-effort basis) only. If you are using CocoaPods, please migrate to Swift Package Manager.
+
 ### Swift Package Manager
 
 Add the following to your `Package.swift` file.
@@ -74,6 +79,9 @@ Add the following to your `Package.swift` file.
     ```
 
 ### Carthage
+
+> [!NOTE]
+> Carthage itself is in maintenance mode. Carthage compatibility is kept on a best-effort basis and is no longer verified by CI.
 
 Add the following to your `Cartfile` and follow [these instructions](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
@@ -99,6 +107,9 @@ Do not forget to include Punycode.framework. Otherwise it will fail to build the
 
 ### CocoaPods
 
+> [!WARNING]
+> CocoaPods distribution ends when the trunk becomes read-only on December 2, 2026. Existing versions will remain installable, but no new versions will be published. Please migrate to Swift Package Manager.
+
 To integrate TLDExtract into your project, add the following to your `Podfile`.
 
 - macOS, iOS, tvOS, watchOS, visionOS, and Swift 5.0
@@ -119,7 +130,7 @@ To integrate TLDExtract into your project, add the following to your `Podfile`.
 
 ## Usage
 
-Full documentation is available at [https://futamura.github.io/TLDExtractSwift/swiftdoc/](https://futamura.github.io/TLDExtractSwift/swiftdoc/).
+Full documentation is available at [https://futamura.github.io/TLDExtractSwift/documentation/tldextractswift/](https://futamura.github.io/TLDExtractSwift/documentation/tldextractswift/).
 
 ### Initialization
 
@@ -160,12 +171,12 @@ print(result.subDomain)         // Optional("www")
 Extract a hostname:
 
 ```swift
-let hostname: String = "gumob.com"
+let hostname: String = "futamura.dev"
 guard let result: TLDResult = extractor.parse(hostname) else { return }
 
-print(result.rootDomain)        // Optional("gumob.com")
-print(result.topLevelDomain)    // Optional("com")
-print(result.secondLevelDomain) // Optional("gumob")
+print(result.rootDomain)        // Optional("futamura.dev")
+print(result.topLevelDomain)    // Optional("dev")
+print(result.secondLevelDomain) // Optional("futamura")
 print(result.subDomain)         // nil
 ```
 
@@ -224,7 +235,7 @@ print(result.secondLevelDomain) // Optional("寿司")
 print(result.subDomain)         // Optional("www.ラーメン")
 ```
 
-Encode an unicode url by using [`Punycode`](https://github.com/futamura/Punycode) Framework:
+Encode an unicode url by using [`Punycode`](https://github.com/futamura/PunycodeSwift) Framework:
 
 ```swift
 import Punycode

@@ -1,0 +1,43 @@
+name: Bug report
+description: Report incorrect behavior, a crash, or a regression
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. For security vulnerabilities, use [private vulnerability reporting](https://github.com/futamura/TLDExtractSwift/security/advisories/new) instead.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened, and what did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal code and input URL(s) or hostname(s) that reproduce the issue.
+      placeholder: |
+        let extractor = try TLDExtract(useFrozenData: true)
+        let result = extractor.parse("www.example.co.jp")
+        // expected: ..., actual: ...
+      render: swift
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Library version
+      placeholder: "3.0.0"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Platform, OS version, Xcode/Swift version, package manager.
+      placeholder: "iOS 26, Xcode 26, SPM"
+    validations:
+      required: true

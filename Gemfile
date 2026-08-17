@@ -9,7 +9,6 @@ gem "cocoapods-deintegrate"
 gem "cocoapods-clean"
 gem "fastlane"
 gem "slather"
-gem "jazzy"
 gem "xcpretty"
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
