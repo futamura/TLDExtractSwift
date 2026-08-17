@@ -130,7 +130,7 @@ To integrate TLDExtract into your project, add the following to your `Podfile`.
 
 ## Usage
 
-Full documentation is available at [https://futamura.github.io/TLDExtractSwift/swiftdoc/](https://futamura.github.io/TLDExtractSwift/swiftdoc/).
+Full documentation is available at [https://futamura.github.io/TLDExtractSwift/documentation/tldextractswift/](https://futamura.github.io/TLDExtractSwift/documentation/tldextractswift/).
 
 ### Initialization
 

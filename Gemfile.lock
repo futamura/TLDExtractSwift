@@ -244,23 +244,10 @@ GEM
       prism (>= 1.3.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    jazzy (0.15.4)
-      activesupport (>= 5.0, < 8)
-      cocoapods (~> 1.5)
-      logger
-      mustache (~> 1.1)
-      open4 (~> 1.3)
-      redcarpet (~> 3.4)
-      rexml (>= 3.2.7, < 4.0)
-      rouge (>= 2.0.6, < 5.0)
-      sassc (~> 2.1)
-      sqlite3 (~> 1.3)
-      xcinvoke (~> 0.3.0)
     jmespath (1.6.2)
     json (2.21.2)
     jwt (3.2.0)
       base64
-    liferaft (0.0.6)
     logger (1.7.0)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
@@ -269,7 +256,6 @@ GEM
     molinillo (0.8.0)
     multi_json (1.21.1)
     multipart-post (2.4.1)
-    mustache (1.1.2)
     mutex_m (0.3.0)
     nanaimo (0.4.0)
     nap (1.1.0)
@@ -297,7 +283,6 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.4-x86_64-linux-musl)
       racc (~> 1.4)
-    open4 (1.3.4)
     optparse (0.8.1)
     os (1.1.4)
     ostruct (0.6.3)
@@ -319,7 +304,6 @@ GEM
       prism (>= 1.6.0)
       rbs (>= 4.0.0)
       tsort
-    redcarpet (3.6.1)
     reline (0.7.0)
       io-console (~> 0.5)
     representable (3.2.0)
@@ -331,8 +315,6 @@ GEM
     rouge (3.28.0)
     ruby-macho (4.1.0)
     rubyzip (2.4.1)
-    sassc (2.4.0)
-      ffi (~> 1.9)
     securerandom (0.4.1)
     security (0.1.5)
     signet (0.22.0)
@@ -348,14 +330,6 @@ GEM
       clamp (~> 1.3)
       nokogiri (>= 1.14.3)
       xcodeproj (~> 1.27)
-    sqlite3 (1.7.3)
-      mini_portile2 (~> 2.8.0)
-    sqlite3 (1.7.3-aarch64-linux)
-    sqlite3 (1.7.3-arm-linux)
-    sqlite3 (1.7.3-arm64-darwin)
-    sqlite3 (1.7.3-x86-linux)
-    sqlite3 (1.7.3-x86_64-darwin)
-    sqlite3 (1.7.3-x86_64-linux)
     terminal-notifier (2.0.0)
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
@@ -375,8 +349,6 @@ GEM
     unicode-emoji (4.2.0)
     uri (1.1.1)
     word_wrap (1.0.0)
-    xcinvoke (0.3.0)
-      liferaft (~> 0.0.6)
     xcodeproj (1.28.1)
       CFPropertyList (>= 2.3.3, < 4.0)
       atomos (~> 0.1.3)
@@ -413,7 +385,6 @@ DEPENDENCIES
   cocoapods-deintegrate
   fastlane
   fastlane-plugin-versioning
-  jazzy
   slather
   xcpretty
 

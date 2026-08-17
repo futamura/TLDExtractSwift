@@ -76,3 +76,6 @@ fastlane/reports
 
 # Python
 .python-version
+# Documentation (generated; deployed to GitHub Pages by docs.yml, not tracked)
+docs/
+docc-site/

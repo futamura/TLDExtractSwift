@@ -28,7 +28,7 @@ bundle exec fastlane lint_swift       # swift-format lint
 bundle exec fastlane build_spm        # swift build + test
 bundle exec fastlane build_carthage   # Carthage builds per platform
 bundle exec fastlane lint_cocoapods   # pod lib lint
-bundle exec fastlane gen_docs         # API docs (currently jazzy into docs/)
+bundle exec fastlane gen_docs         # DocC static site into docc-site/ (via scripts/gen_docs.sh)
 bundle exec fastlane set_version      # prompt for version; syncs pbxproj + podspec
 bundle exec fastlane bump_version     # patch/minor/major bump; same sync
 
@@ -72,7 +72,7 @@ Tests live in `Tests/TLDExtractSwiftTests.swift` (single XCTest file; SPM test t
 - Single source of truth for the version: `MARKETING_VERSION` in `TLDExtractSwift.xcodeproj/project.pbxproj`. Never edit versions by hand — use `fastlane set_version` / `bump_version`, which also sync `TLDExtractSwift.podspec`.
 - Branch flow: work on `develop`, PR into `main`.
 - CI (`.github/workflows/main.yml`) runs on push and pull request to `main`/`develop`: swift-format lint → per-platform xcodebuild tests (simulator devices resolved at runtime via `simctl`) → SPM (macOS) → pod lib lint. It does not release. Carthage builds are not CI-verified (best-effort compatibility via the Xcode project). The `CI Success` job aggregates all results and is the required status check on `main`.
-- Docs: currently jazzy-generated into a committed `docs/` directory, served by GitHub Pages via `.github/workflows/static.yml` on push to `main`.
+- Documentation (`.github/workflows/docs.yml`) builds the DocC site with `scripts/gen_docs.sh` (symbolgraph-extract with `-emit-extension-block-symbols` — required because part of the public API is extensions on URL/String — then `docc convert`) and deploys it to GitHub Pages on every push to `main`. The site is not tracked in git; `docs/` no longer exists.
 - Releasing is a separate, explicit step: push a bare version tag (e.g. `3.0.1`) matching `MARKETING_VERSION`. `.github/workflows/release.yml` then verifies the tag against the project version, creates a GitHub Release (notes taken from the tag's `CHANGELOG.md` section, falling back to generated notes), and pushes to CocoaPods trunk.
 - Version tags are immutable: the release workflow fails if the tag or trunk version already exists. To re-release, bump the version — never delete/re-push a tag.
 - Keep `CHANGELOG.md` (Keep a Changelog format) current: user-facing changes go under **Unreleased**; when releasing, rename that section to the new version with the date and add its compare link. The release workflow extracts this section for the GitHub Release notes.
