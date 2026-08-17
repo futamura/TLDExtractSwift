@@ -9,12 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Linux support, verified by CI (`swift build` / `swift test` on the official Swift container).
 - GitHub Releases are now created automatically when a version tag is pushed.
 - `CI Success` aggregate check for branch protection.
 - Community files: `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`, issue and PR templates.
 
 ### Changed
 
+- **Breaking**: `Package.swift` requires swift-tools 5.9 (Xcode 15 or later for SPM consumers) and declares explicit platforms: macOS 10.13, iOS 12, tvOS 12, watchOS 4, visionOS 1.
+- Product bundle identifiers renamed from `com.gumob.*` to `dev.futamura.*`, completing the account rename.
 - CI runs on pushes and pull requests to `main` and `develop`, on current macOS runner images, resolving simulator destinations at runtime.
 - API documentation migrated from jazzy to DocC, built and deployed to GitHub Pages by CI; the generated site is no longer tracked in the repository. New URL: <https://futamura.github.io/TLDExtractSwift/documentation/tldextractswift/>.
 - Releasing is now a separate tag-triggered workflow that verifies the tag against the project version before publishing. Version tags are immutable.

@@ -7,6 +7,10 @@
 
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 /// TLDExtract is a class that extracts the top-level domain (TLD) from a given hostname.
 /// It can fetch the public suffix list from a remote source or use a frozen dataset.
 ///

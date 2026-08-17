@@ -170,6 +170,17 @@ jobs:
         run: swift test -c debug 2>&1 | xcbeautify --renderer github-actions
     needs: [test_macOS, test_Catalyst, test_simulators]
 
+  SPM_linux:
+    name: "SPM: Linux, Swift 6.2"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    container: swift:6.2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test SPM
+        run: swift test -c debug
+    needs: [test_macOS, test_Catalyst, test_simulators]
+
   ### Carthage builds are no longer verified by CI (Carthage is in maintenance mode;
   ### compatibility is kept on a best-effort basis via the Xcode project).
   ### CocoaPods linting is reduced to macOS/iOS Release: the trunk becomes read-only
@@ -205,7 +216,7 @@ jobs:
     name: CI Success
     runs-on: ubuntu-latest
     if: always()
-    needs: [lint_code, test_macOS, test_Catalyst, test_simulators, SPM, lint_cocoapods]
+    needs: [lint_code, test_macOS, test_Catalyst, test_simulators, SPM, SPM_linux, lint_cocoapods]
     steps:
       - name: Check all jobs succeeded
         run: |
