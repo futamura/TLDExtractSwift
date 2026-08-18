@@ -25,8 +25,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Deprecated
 
-- CocoaPods distribution ends when the trunk becomes read-only on 2026-12-02. Migrate to Swift Package Manager.
 - Carthage support is best-effort and no longer CI-verified.
+
+### Removed
+
+- CocoaPods publishing: 3.0.0 is the last version available as the `TLDExtractSwift` pod (the trunk becomes read-only on 2026-12-02 anyway). Later versions are distributed via Swift Package Manager (and Carthage on a best-effort basis). The podspec, the pod lint CI job, and the trunk push in the release workflow are removed.
 
 ## [3.0.0] - 2024-08-28
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-TLDExtractSwift — a pure Swift library that extracts the top-level domain, second-level domain, subdomain, and root domain from a hostname or URL using the Public Suffix List (PSL), including IDNA/internationalized domains. Depends on PunycodeSwift (`Punycode` module) for IDNA encoding. Supports macOS, iOS, tvOS, watchOS, visionOS, and Linux (SPM builds). Distributed primarily via SPM; also Carthage and CocoaPods (pod name: `TLDExtractSwift`).
+TLDExtractSwift — a pure Swift library that extracts the top-level domain, second-level domain, subdomain, and root domain from a hostname or URL using the Public Suffix List (PSL), including IDNA/internationalized domains. Depends on PunycodeSwift (`Punycode` module) for IDNA encoding. Supports macOS, iOS, tvOS, watchOS, visionOS, and Linux (SPM builds). Distributed via SPM. Carthage compatibility is best-effort (not CI-verified); CocoaPods distribution has ended (3.0.0 is the last version published under the pod name `TLDExtractSwift`).
 
 ## Commands
 
@@ -27,10 +27,9 @@ bundle exec fastlane tests            # xcodebuild tests on all platforms (macOS
 bundle exec fastlane lint_swift       # swift-format lint
 bundle exec fastlane build_spm        # swift build + test
 bundle exec fastlane build_carthage   # Carthage builds per platform
-bundle exec fastlane lint_cocoapods   # pod lib lint
 bundle exec fastlane gen_docs         # DocC static site into docc-site/ (via scripts/gen_docs.sh)
-bundle exec fastlane set_version      # prompt for version; syncs pbxproj + podspec
-bundle exec fastlane bump_version     # patch/minor/major bump; same sync
+bundle exec fastlane set_version      # prompt for version; sets MARKETING_VERSION in the pbxproj
+bundle exec fastlane bump_version     # patch/minor/major bump; same effect
 
 # Interactive job menu (fzf)
 ./run.sh
@@ -61,7 +60,7 @@ Source files in `Sources/`:
 `TLDExtract.init` branches on `#if SWIFT_PACKAGE`:
 
 - **SPM build**: `useFrozenData: true` uses the embedded `SPM_PSL` string; `false` (default) synchronously downloads https://publicsuffix.org/list/public_suffix_list.dat at init. During parsing, each PSL line is additionally registered in its IDNA-encoded form via PunycodeSwift (`line.idnaEncoded`).
-- **Framework build** (Xcode/Carthage/CocoaPods): loads `Resources/public_suffix_list.dat` (or `public_suffix_list_frozen.dat` when `useFrozenData: true`) from the framework bundle via `Bundle.current`. The podspec ships these via `s.resources = "Resources/*.dat"`. No IDNA pass at parse time — punycoded rules are pre-baked into the `.dat` file.
+- **Framework build** (Xcode/Carthage): loads `Resources/public_suffix_list.dat` (or `public_suffix_list_frozen.dat` when `useFrozenData: true`) from the framework bundle via `Bundle.current`. No IDNA pass at parse time — punycoded rules are pre-baked into the `.dat` file.
 
 `update-psl.py` regenerates `Resources/public_suffix_list.dat`: downloads the latest PSL, strips comments and blank lines, and inserts a punycode-encoded variant after each internationalized rule. It does not touch `SPMPSL.swift` or `public_suffix_list_frozen.dat` — those are frozen snapshots.
 
@@ -69,11 +68,10 @@ Tests live in `Tests/TLDExtractSwiftTests.swift` (single XCTest file; SPM test t
 
 ## Versioning and release
 
-- Single source of truth for the version: `MARKETING_VERSION` in `TLDExtractSwift.xcodeproj/project.pbxproj`. Never edit versions by hand — use `fastlane set_version` / `bump_version`, which also sync `TLDExtractSwift.podspec`.
+- Single source of truth for the version: `MARKETING_VERSION` in `TLDExtractSwift.xcodeproj/project.pbxproj`. Never edit versions by hand — use `fastlane set_version` / `bump_version`.
 - Branch flow: work on `develop`, PR into `main`.
-- CI (`.github/workflows/main.yml`) runs on push and pull request to `main`/`develop`: swift-format lint → per-platform xcodebuild tests (simulator devices resolved at runtime via `simctl`) → SPM (macOS + Linux via the official Swift container) → pod lib lint. It does not release. Carthage builds are not CI-verified (best-effort compatibility via the Xcode project). The `CI Success` job aggregates all results and is the required status check on `main`.
+- CI (`.github/workflows/main.yml`) runs on push and pull request to `main`/`develop`: swift-format lint → per-platform xcodebuild tests (simulator devices resolved at runtime via `simctl`) → SPM (macOS + Linux via the official Swift container). It does not release. Carthage builds are not CI-verified (best-effort compatibility via the Xcode project). The `CI Success` job aggregates all results and is the required status check on `main`.
 - Documentation (`.github/workflows/docs.yml`) builds the DocC site with `scripts/gen_docs.sh` (symbolgraph-extract with `-emit-extension-block-symbols` — required because part of the public API is extensions on URL/String — then `docc convert`) and deploys it to GitHub Pages on every push to `main`. The site is not tracked in git; `docs/` no longer exists.
-- Releasing is a separate, explicit step: push a bare version tag (e.g. `3.0.1`) matching `MARKETING_VERSION`. `.github/workflows/release.yml` then verifies the tag against the project version, creates a GitHub Release (notes taken from the tag's `CHANGELOG.md` section, falling back to generated notes), and pushes to CocoaPods trunk.
-- Version tags are immutable: the release workflow fails if the tag or trunk version already exists. To re-release, bump the version — never delete/re-push a tag.
+- Releasing is a separate, explicit step: push a bare version tag (e.g. `4.0.1`) matching `MARKETING_VERSION`. `.github/workflows/release.yml` then verifies the tag against the project version and creates a GitHub Release (notes taken from the tag's `CHANGELOG.md` section, falling back to generated notes).
+- Version tags are immutable: the release workflow fails if the tag already exists. To re-release, bump the version — never delete/re-push a tag.
 - Keep `CHANGELOG.md` (Keep a Changelog format) current: user-facing changes go under **Unreleased**; when releasing, rename that section to the new version with the date and add its compare link. The release workflow extracts this section for the GitHub Release notes.
-- CocoaPods trunk becomes read-only on 2026-12-02; CocoaPods distribution ends then. After that date, remove the `lint_cocoapods` job from `main.yml` and the `publish_cocoapods` job from `release.yml`.

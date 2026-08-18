@@ -54,7 +54,7 @@ Domain names are the unique, human-readable Internet addresses of websites. They
 Swift Package Manager is the recommended way to install TLDExtractSwift.
 
 > [!IMPORTANT]
-> The CocoaPods trunk becomes permanently read-only on December 2, 2026. Versions released after that date will be available via Swift Package Manager (and Carthage on a best-effort basis) only. If you are using CocoaPods, please migrate to Swift Package Manager.
+> CocoaPods distribution has ended: 3.0.0 is the last version published as a pod. Future versions are available via Swift Package Manager (and Carthage on a best-effort basis) only. If you are using CocoaPods, please migrate to Swift Package Manager.
 
 ### Swift Package Manager
 
@@ -106,9 +106,9 @@ Do not forget to include Punycode.framework. Otherwise it will fail to build the
 ### CocoaPods
 
 > [!WARNING]
-> CocoaPods distribution ends when the trunk becomes read-only on December 2, 2026. Existing versions will remain installable, but no new versions will be published. Please migrate to Swift Package Manager.
+> CocoaPods distribution has ended: 3.0.0 is the last version published as a pod. Existing versions remain installable until the trunk archive disappears, but no new versions will be published. Please migrate to Swift Package Manager.
 
-To integrate TLDExtract into your project, add the following to your `Podfile`.
+Existing installations reference the pod as follows.
 
 - macOS, iOS, tvOS, watchOS, visionOS, and Swift 5.0
 

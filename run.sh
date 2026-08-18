@@ -12,8 +12,6 @@ local option_list=(
 	"fastlane tests"
 	"fastlane build_spm"
 	"fastlane build_carthage"
-	"fastlane lint_cocoapods"
-	"fastlane push_cocoapods"
 	"fastlane gen_docs"
 	"fastlane set_version"
 	"fastlane bump_version"
@@ -22,8 +20,6 @@ local option_list=(
 	"Xcode - Clean all build cache"
 	" "
 	"Carthage - Update all platforms"
-	"Cocoapods - Clean all cache"
-	"Cocoapods - Trunk push"
 	" "
 	"Github - Update tag"
 	"Github - Fetch remote tag"
@@ -56,40 +52,6 @@ local carthage_update() {
 	carthage update --platform visionos;
 }
 
-local cocoapods_clean() {
-    pod cache clean --all;
-}
-
-local cocoapods_trunk_push() {
-	# Enable error handling and exit the script on pipe failures
-	set -eo pipefail
-	# Check if the current branch is 'main'
-	if [[ $(git rev-parse --abbrev-ref HEAD) != "main" ]]; then
-		echo "Warning: You are not on the main branch. Please switch to the main branch and run again."
-		exit 1
-	fi
-	# Find the project name and podspec name
-	project_name=$(find . -maxdepth 1 -name "*.xcodeproj" -exec basename {} .xcodeproj \;)
-	podspec_name=$(find . -maxdepth 1 -name "*.podspec" -exec basename {} .podspec \;)
-	# Retrieve the current version from the project file
-	current_version=$(grep -m1 'MARKETING_VERSION' "${project_name}.xcodeproj/project.pbxproj" | sed 's/.*= //;s/;//')
-	echo "Current version: $current_version"
-	# Check if the current version is a valid semantic version
-	if [[ ! "$current_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-		echo "Error: Invalid version number"
-		exit 1
-	fi
-	# Check if the current version already exists in the CocoaPods trunk
-	if pod trunk info ${podspec_name} | grep -q "$current_version"; then
-		echo "Start deleting $current_version"
-		# Delete the existing version from the CocoaPods trunk
-		echo "y" | pod trunk delete ${podspec_name} $current_version || true
-	fi
-	echo "Start pushing $current_version"
-	# Push the new version to the CocoaPods trunk
-	pod trunk push ${podspec_name}.podspec --allow-warnings
-}
-
 local github_update_tag() {
 	# Enable error handling and exit the script on pipe failures
 	set -eo pipefail
@@ -98,21 +60,20 @@ local github_update_tag() {
 		echo "Warning: You are not on the main branch. Please switch to the main branch and run again."
 		exit 1
 	fi
-	# Find the project name and podspec name
+	# Find the project name
 	project_name=$(find . -maxdepth 1 -name "*.xcodeproj" -exec basename {} .xcodeproj)
-	podspec_name=$(find . -maxdepth 1 -name "*.podspec" -exec basename {} .podspec)
 	# Retrieve build settings and execute a command to filter MARKETING_VERSION
 	current_version=$(grep -m1 'MARKETING_VERSION' "${project_name}.xcodeproj/project.pbxproj" | sed 's/.*= //;s/;//')
 	echo "Current version: $current_version"
 	# If the current version is found
 	if [[ $current_version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-		# Check if a tag for the current version already exists
-		if git tag -l | grep -q "$current_version"; then
-			# If the tag exists, delete it from both local and remote
-			git tag -d "$current_version"
-			git push origin ":refs/tags/$current_version"
+		# Tags are immutable: never delete or overwrite an existing version tag
+		if git tag -l | grep -q "^${current_version}$"; then
+			echo "Error: Tag $current_version already exists. Bump the version instead of retagging."
+			exit 1
 		fi
 		# Create a new tag for the current version and push it to the remote repository
+		# Pushing this tag triggers the Release workflow (GitHub Release creation)
 		git tag "$current_version"
 		git push origin "$current_version"
 	else
@@ -145,8 +106,6 @@ case "$selected_option" in
 	"Xcode - Initialize project")                xcode_init;;
 	"Xcode - Clean all build cache")             xcode_clean;;
 	"Carthage - Update all platforms")           carthage_update;;
-	"Cocoapods - Clean all cache")               cocoapods_clean;;
-	"Cocoapods - Trunk push")                    cocoapods_trunk_push;;
 	"Github - Update tag")                       github_update_tag;;
 	"Github - Fetch remote tag")                 github_fetch_remote_tag;;
 	*)                                           echo "Invalid option $selected_option" && exit 1;;

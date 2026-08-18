@@ -1,20 +1,6 @@
 default_platform(:ios)
 
-#
-# Workaround for following error while executing `pod lib lint` and `pod trunk push`
-#
-# EXPANDED_CODE_SIGN_IDENTITY: unbound variable
-# Command PhaseScriptExecution failed with a nonzero exit code
-#
-# For more information is available at
-# https://github.com/CocoaPods/CocoaPods/issues/8000#issuecomment-434488071
-#
-ENV["EXPANDED_CODE_SIGN_IDENTITY"] = ""
-ENV["EXPANDED_CODE_SIGN_IDENTITY_NAME"] = ""
-ENV["EXPANDED_PROVISIONING_PROFILE"] = ""
-
 xcodeproj_file="TLDExtractSwift.xcodeproj"
-podspec_file="TLDExtractSwift.podspec"
 scheme = "TLDExtractSwift"
 
 desc "Run all jobs"
@@ -23,7 +9,6 @@ lane :run_all do
     tests
     build_spm
     build_carthage
-    lint_cocoapods
     gen_docs
 end
 
@@ -43,8 +28,6 @@ lane :set_version do
     if matched then
         # Set version number to project
         increment_version_number_in_xcodeproj(version_number: new_app_version)
-        # Set version number to podspec
-        version_bump_podspec(path: podspec_file, version_number: new_app_version)
         UI.message("Changed version from #{current_app_version} to #{new_app_version} ")
     else
         UI.error("Invalid version number. #{new_app_version}")
@@ -73,8 +56,6 @@ lane :bump_version do
     new_app_version = [current_app_version_major, current_app_version_minor, current_app_version_patch].join(".")
     # Set version number to project
     increment_version_number_in_xcodeproj(version_number: new_app_version)
-    # Set version number to podspec
-    version_bump_podspec(path: podspec_file, version_number: new_app_version)
     UI.message("Changed version from #{current_app_version} to #{new_app_version} ")
 end
 
@@ -246,17 +227,6 @@ lane :build_carthage do |options|
     #     use_xcframeworks: true,
     #     no_skip_current: true
     # )
-end
-
-desc "Lint Cocoapods"
-lane :lint_cocoapods do |options|
-    pod_lib_lint(verbose: true)
-end
-
-desc "Push Cocoapods"
-lane :push_cocoapods do |options|
-    pod_lib_lint(verbose: true)
-    pod_push(path: podspec_file)
 end
 
 ##########################################

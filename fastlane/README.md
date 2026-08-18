@@ -13,53 +13,69 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-### Run all jobs
+### run_all
 
 ```sh
-bundle exec fastlane run_all
+[bundle exec] fastlane run_all
 ```
 
-### Set version number
+Run all jobs
+
+### set_version
 
 ```sh
-bundle exec fastlane set_version
+[bundle exec] fastlane set_version
 ```
 
-### Bump version number
+Set version number
+
+### bump_version
 
 ```sh
-bundle exec fastlane bump_version
+[bundle exec] fastlane bump_version
 ```
 
-### Run all tests
+Bump version number
+
+### lint_swift
 
 ```sh
-bundle exec fastlane tests
+[bundle exec] fastlane lint_swift
 ```
 
-### Build SPM
+Lint codes with swift-format
+
+### tests
 
 ```sh
-bundle exec fastlane build_spm
+[bundle exec] fastlane tests
 ```
 
-### Build Carthage
+Run all tests
+
+### build_spm
 
 ```sh
-bundle exec fastlane build_carthage
+[bundle exec] fastlane build_spm
 ```
 
-### Lint Cocoapods
+Lint Swift Package Manager
+
+### build_carthage
 
 ```sh
-bundle exec fastlane lint_cocoapods
+[bundle exec] fastlane build_carthage
 ```
 
-### Push Cocoapods
+Build Carthage
+
+### gen_docs
 
 ```sh
-bundle exec fastlane push_cocoapods
+[bundle exec] fastlane gen_docs
 ```
+
+Generate DocC documentation site into docc-site/
 
 ----
 
