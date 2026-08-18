@@ -5,7 +5,7 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.0.0] - 2026-08-18
 
 ### Added
 
@@ -17,11 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Breaking**: `Package.swift` requires swift-tools 5.9 (Xcode 15 or later for SPM consumers) and declares explicit platforms: macOS 10.13, iOS 12, tvOS 12, watchOS 4, visionOS 1.
+- **Breaking**: the PunycodeSwift dependency is raised to 4.0 (`.upToNextMajor(from: "4.0.0")`), which adds the URL-aware `idnaEncodedURL` / `idnaDecodedURL` API.
 - Product bundle identifiers renamed from `com.gumob.*` to `dev.futamura.*`, completing the account rename.
 - CI runs on pushes and pull requests to `main` and `develop`, on current macOS runner images, resolving simulator destinations at runtime.
 - API documentation migrated from jazzy to DocC, built and deployed to GitHub Pages by CI; the generated site is no longer tracked in the repository. New URL: <https://futamura.github.io/TLDExtractSwift/documentation/tldextractswift/>.
 - Releasing is now a separate tag-triggered workflow that verifies the tag against the project version before publishing. Version tags are immutable.
 - Development tooling: Ruby 3.4 / Bundler 2.7, gems updated to clear all outstanding Dependabot alerts.
+
+### Fixed
+
+- The README example that applied `idnaEncoded` to a full URL (which mangles the scheme into the first label) now encodes the host component correctly ([#8](https://github.com/futamura/TLDExtractSwift/issues/8)).
 
 ### Deprecated
 
@@ -79,7 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release: extraction of root domain, top-level domain, second-level domain, and subdomain from URLs and hostnames using the Public Suffix List, with IDNA support.
 
-[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/3.0.0...HEAD
+[4.0.0]: https://github.com/futamura/TLDExtractSwift/compare/3.0.0...4.0.0
 [3.0.0]: https://github.com/futamura/TLDExtractSwift/compare/2.1.1...3.0.0
 [2.1.1]: https://github.com/futamura/TLDExtractSwift/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/futamura/TLDExtractSwift/compare/2.0.0...2.1.0
