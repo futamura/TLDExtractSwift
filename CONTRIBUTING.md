@@ -61,7 +61,7 @@ Run this before pushing; the `Lint Code` job fails on violations.
 
 ## Versioning and releases
 
-Releases are handled by maintainers. The version's single source of truth is `MARKETING_VERSION` in `TLDExtractSwift.xcodeproj/project.pbxproj`; it is synced to the podspec via `bundle exec fastlane set_version` / `bump_version`. Do not edit version numbers by hand in a pull request.
+Releases are handled by maintainers. The version's single source of truth is `MARKETING_VERSION` in `TLDExtractSwift.xcodeproj/project.pbxproj`; set it via `bundle exec fastlane set_version` / `bump_version`. Do not edit version numbers by hand in a pull request.
 
 ## Reporting issues
 
