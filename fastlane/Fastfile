@@ -17,26 +17,37 @@ end
 ##########################################
 
 desc "Set version number"
-lane :set_version do
+lane :set_version do |options|
     current_app_version = get_version_number_from_xcodeproj(xcodeproj: xcodeproj_file)
-    new_app_version = prompt(
-        text: "Please enter version number (Current: #{current_app_version}): ",
-        ci_input: current_app_version
-    )
-    regexp = Regexp.new("[0-9]+\.[0-9]+\.[0-9]+")
-    matched = regexp.match(new_app_version)
-    if matched then
-        # Set version number to project
-        increment_version_number_in_xcodeproj(version_number: new_app_version)
-        UI.message("Changed version from #{current_app_version} to #{new_app_version} ")
-    else
-        UI.error("Invalid version number. #{new_app_version}")
+    new_app_version = options[:version]&.to_s
+    if new_app_version.nil? then
+        unless UI.interactive? then
+            UI.user_error!("No TTY to prompt on. Pass the version instead: fastlane set_version version:#{current_app_version}")
+        end
+        new_app_version = UI.input("Please enter version number (Current: #{current_app_version}): ")
     end
+    # Anchored so that partial matches such as "1a2b3" are rejected
+    unless new_app_version.match?(/\A\d+\.\d+\.\d+\z/) then
+        UI.user_error!("Invalid version number. #{new_app_version}")
+    end
+    # Set version number to project
+    increment_version_number_in_xcodeproj(version_number: new_app_version)
+    UI.message("Changed version from #{current_app_version} to #{new_app_version} ")
 end
 
 desc "Bump version number"
-lane :bump_version do
-    bump_type = UI.select("Select version position to be upgraded: ", ["patch", "minor", "major"])
+lane :bump_version do |options|
+    bump_types = ["patch", "minor", "major"]
+    bump_type = options[:type]&.to_s
+    if bump_type.nil? then
+        unless UI.interactive? then
+            UI.user_error!("No TTY to prompt on. Pass the bump type instead: fastlane bump_version type:patch")
+        end
+        bump_type = UI.select("Select version position to be upgraded: ", bump_types)
+    end
+    unless bump_types.include?(bump_type) then
+        UI.user_error!("Invalid bump type. #{bump_type} (expected one of: #{bump_types.join(", ")})")
+    end
     current_app_version = get_version_number_from_xcodeproj(xcodeproj: xcodeproj_file)
     current_app_versions = current_app_version.split(".")
     current_app_version_patch = current_app_versions[2].to_i

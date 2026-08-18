@@ -29,7 +29,9 @@ bundle exec fastlane build_spm        # swift build + test
 bundle exec fastlane build_carthage   # Carthage builds per platform
 bundle exec fastlane gen_docs         # DocC static site into docc-site/ (via scripts/gen_docs.sh)
 bundle exec fastlane set_version      # prompt for version; sets MARKETING_VERSION in the pbxproj
+bundle exec fastlane set_version version:4.0.2   # non-interactive form
 bundle exec fastlane bump_version     # patch/minor/major bump; same effect
+bundle exec fastlane bump_version type:patch     # non-interactive form
 
 # Interactive job menu (fzf)
 ./run.sh
@@ -70,7 +72,7 @@ Tests live in `Tests/TLDExtractSwiftTests.swift` (single XCTest file; SPM test t
 
 ## Versioning and release
 
-- Single source of truth for the version: `MARKETING_VERSION` in `TLDExtractSwift.xcodeproj/project.pbxproj`. Never edit versions by hand — use `fastlane set_version` / `bump_version`.
+- Single source of truth for the version: `MARKETING_VERSION` in `TLDExtractSwift.xcodeproj/project.pbxproj`. Never edit versions by hand — use `fastlane set_version` / `bump_version`. Both lanes prompt only when stdin is a TTY; without one, pass `version:` / `type:` or the lane fails rather than silently leaving the version untouched.
 - Branch flow: work on `develop`, PR into `main`.
 - CI (`.github/workflows/main.yml`) runs on push and pull request to `main`/`develop`: swift-format lint → per-platform xcodebuild tests (simulator devices resolved at runtime via `simctl`) → SPM (macOS + Linux via the official Swift container). It does not release. Carthage builds are not CI-verified (best-effort compatibility via the Xcode project). The `CI Success` job aggregates all results and is the required status check on `main`.
 - Documentation (`.github/workflows/docs.yml`) builds the DocC site with `scripts/gen_docs.sh` (symbolgraph-extract with `-emit-extension-block-symbols` — required because part of the public API is extensions on URL/String — then `docc convert`) and deploys it to GitHub Pages on every push to `main`. The site is not tracked in git; `docs/` no longer exists.

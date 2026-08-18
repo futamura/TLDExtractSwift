@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The bundled Public Suffix List is refreshed. `public_suffix_list_frozen.dat` and the `SPM_PSL` literal had not been regenerated since August 2024, so `useFrozenData: true` was resolving against a two-year-old list; `update-psl.py` now writes all three bundled copies from a single download.
 - `update-psl.py` requires Python 3 (the Python 2 branch is gone) and reports any rule it cannot punycode instead of failing silently.
 
+### Fixed
+
+- Maintainer tooling: the `set_version` / `bump_version` fastlane lanes accept `version:` / `type:` arguments and fail without a TTY instead of silently leaving the version untouched, and the version format check is anchored so that values such as `1a2b3` are rejected instead of written to the project.
+
 ## [4.0.1] - 2026-08-18
 
 ### Changed
