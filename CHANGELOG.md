@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+- The Xcode script build phases that reformatted sources and regenerated the bundled Public Suffix List on every build. Builds no longer mutate the working tree (and no longer emit script-sandboxing warnings); refresh the bundled list explicitly with `python update-psl.py`.
 - Leftover SwiftLint and Hound configuration (linting is enforced via swift-format) and the obsolete `.swift-version` file.
 
 ## [4.0.0] - 2026-08-18
