@@ -64,7 +64,7 @@ Source files in `Sources/`:
 
 `update-psl.py` downloads the latest PSL, strips comments and blank lines, inserts a punycode-encoded variant after each internationalized rule, and writes the result to all three bundled copies: `Resources/public_suffix_list.dat`, `Resources/public_suffix_list_frozen.dat`, and the `SPM_PSL` literal in `Sources/SPMPSL.swift` (substituted in place, so the file's header is preserved). The three therefore hold identical data; `useFrozenData` selects between a bundled snapshot and a live download only on the SPM path.
 
-`.github/workflows/update-psl.yml` runs the script weekly (Monday 03:00 UTC, plus manual dispatch) and opens a pull request against `develop` when the list changed. A pull request opened with `GITHUB_TOKEN` does not trigger workflows; set the `PSL_UPDATE_TOKEN` secret to a PAT if CI should run on it automatically.
+`.github/workflows/update-psl.yml` runs the script weekly (Monday 03:00 UTC, plus manual dispatch). When the list changed it runs `swift test` in the `swift:6.2` container against the refreshed data and opens a pull request against `develop` only if those tests pass. That in-workflow run is the real gate: a pull request opened with `GITHUB_TOKEN` does not trigger workflows, so the pull request itself usually shows no checks (close and reopen it to start them, or set the `PSL_UPDATE_TOKEN` secret to a PAT — the workflow prefers that secret when present).
 
 Tests live in `Tests/TLDExtractSwiftTests.swift` (single XCTest file; SPM test target name is `TLDExtractSwiftTests`).
 

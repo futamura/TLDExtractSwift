@@ -30,7 +30,24 @@ jobs:
           python-version: "3.x"
       - name: Refresh the list
         run: python update-psl.py
+      - name: Check whether the list changed
+        id: check
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "The bundled list already matches upstream."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      ### The pull request this job opens carries no checks of its own (see the
+      ### token note below), so the parser is exercised against the new list
+      ### here instead. A list that breaks the tests fails this run and never
+      ### reaches a pull request.
+      - name: Test against the refreshed list
+        if: steps.check.outputs.changed == 'true'
+        run: docker run --rm -v "$PWD:/package" -w /package swift:6.2 swift test -c debug
       - name: Create pull request
+        if: steps.check.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
           ### A pull request opened with GITHUB_TOKEN does not trigger workflows,
@@ -46,7 +63,8 @@ jobs:
             `update-psl.py`, which rewrites both bundled `.dat` resources and
             the `SPM_PSL` literal from a single download.
 
-            Merge once CI is green — the parser tests run against these files.
-            If no checks are reported, close and reopen this pull request to
-            start them (see the token note in the workflow).
+            The parser tests already ran against this list in the workflow that
+            opened the pull request. Checks may be absent here — a pull request
+            opened with `GITHUB_TOKEN` does not trigger workflows; close and
+            reopen it to start them.
           delete-branch: true

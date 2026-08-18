@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- A weekly workflow that refreshes the bundled Public Suffix List and opens a pull request when it changed.
+- A weekly workflow that refreshes the bundled Public Suffix List, runs the test suite against the new data, and opens a pull request when it changed.
 
 ### Changed
 
