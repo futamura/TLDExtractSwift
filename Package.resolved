@@ -1,16 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Punycode",
-        "repositoryURL": "https://github.com/futamura/PunycodeSwift.git",
-        "state": {
-          "branch": null,
-          "revision": "30a462bdb4398ea835a3585472229e0d74b36ba5",
-          "version": "3.0.0"
-        }
+  "pins" : [
+    {
+      "identity" : "punycodeswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/futamura/PunycodeSwift.git",
+      "state" : {
+        "revision" : "a32282d44a320b4468ee8993246cbd6c62508b91",
+        "version" : "4.0.0"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }

@@ -2,8 +2,8 @@
 ![Carthage](https://img.shields.io/badge/Carthage-Compatible-blue)
 [![Build](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml/badge.svg)](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/futamura/TLDExtractSwift/branch/main/graph/badge.svg)](https://codecov.io/gh/futamura/TLDExtractSwift)
-![Language](https://img.shields.io/badge/Language-Swift%205.0-orange.svg)
-![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)
+![Language](https://img.shields.io/badge/Language-Swift%205.9-orange.svg)
+![License](https://img.shields.io/github/license/futamura/TLDExtractSwift.svg)
 
 # TLDExtract
 <code>TLDExtract</code> is a pure Swift library to allows you to get the public suffix of a domain name using [the Public Suffix List](http://www.publicsuffix.org). You can find alternatives for other languages at [publicsuffix.org](https://publicsuffix.org/learn/).<br/>
@@ -47,7 +47,8 @@ Domain names are the unique, human-readable Internet addresses of websites. They
 - tvOS 12.0 or later
 - watchOS 4.0 or later
 - visionOS 1.0 or later
-- Swift 5.0 or later
+- Linux (SPM builds)
+- Swift 5.9 or later (Xcode 15 or later) for Swift Package Manager
 
 ## Installation
 
@@ -59,6 +60,14 @@ Swift Package Manager is the recommended way to install TLDExtractSwift.
 ### Swift Package Manager
 
 Add the following to your `Package.swift` file.
+
+- macOS, iOS, tvOS, watchOS, visionOS, Linux, and Swift 5.9 (Xcode 15) or later
+
+    ```swift
+    dependencies: [
+        .package(url: "https://github.com/futamura/TLDExtractSwift.git", .upToNextMajor(from: "4.0.0"))
+    ]
+    ```
 
 - macOS, iOS, tvOS, watchOS, visionOS, and Swift 5
 
@@ -82,6 +91,12 @@ Add the following to your `Package.swift` file.
 > Carthage itself is in maintenance mode. Carthage compatibility is kept on a best-effort basis and is no longer verified by CI.
 
 Add the following to your `Cartfile` and follow [these instructions](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
+
+- macOS, iOS, tvOS, watchOS, visionOS, and Swift 5.9 or later
+
+    ```
+    github "futamura/TLDExtractSwift" ~> 4.0
+    ```
 
 - macOS, iOS, tvOS, watchOS, visionOS, and Swift 5
 
@@ -233,14 +248,14 @@ print(result.secondLevelDomain) // Optional("寿司")
 print(result.subDomain)         // Optional("www.ラーメン")
 ```
 
-Encode a unicode hostname by using the [`Punycode`](https://github.com/futamura/PunycodeSwift) Framework. Note that `idnaEncoded` operates on hostnames — apply it to the host part only, not to a full URL including the scheme:
+Encode a unicode url by using the [`Punycode`](https://github.com/futamura/PunycodeSwift) Framework. `idnaEncodedURL` (PunycodeSwift 4.0 or later) encodes the host component only, preserving the scheme and the rest of the URL — `idnaEncoded` is the hostname-level equivalent and must not be applied to a full URL:
 
 ```swift
 import Punycode
 
-let hostname: String = "www.ラーメン.寿司.co.jp".idnaEncoded!
-let url: URL = URL(string: "http://" + hostname)!
-print(hostname)                 // www.xn--4dkp5a8a.xn--sprr0q.co.jp
+let urlString: String = "http://www.ラーメン.寿司.co.jp".idnaEncodedURL!
+let url: URL = URL(string: urlString)!
+print(urlString)                // http://www.xn--4dkp5a8a.xn--sprr0q.co.jp
 
 guard let result: TLDResult = extractor.parse(url) else { return }
 
