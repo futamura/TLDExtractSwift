@@ -2,8 +2,8 @@
 ![Carthage](https://img.shields.io/badge/Carthage-Compatible-blue)
 [![Build](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml/badge.svg)](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/futamura/TLDExtractSwift/branch/main/graph/badge.svg)](https://codecov.io/gh/futamura/TLDExtractSwift)
-![Language](https://img.shields.io/badge/Language-Swift%205.0-orange.svg)
-![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)
+![Language](https://img.shields.io/badge/Language-Swift%205.9-orange.svg)
+![License](https://img.shields.io/github/license/futamura/TLDExtractSwift.svg)
 
 # TLDExtract
 <code>TLDExtract</code> is a pure Swift library to allows you to get the public suffix of a domain name using [the Public Suffix List](http://www.publicsuffix.org). You can find alternatives for other languages at [publicsuffix.org](https://publicsuffix.org/learn/).<br/>
@@ -48,7 +48,7 @@ Domain names are the unique, human-readable Internet addresses of websites. They
 - watchOS 4.0 or later
 - visionOS 1.0 or later
 - Linux (SPM builds)
-- Swift 5.9 or later (Swift 5.0 for 3.x)
+- Swift 5.9 or later (Xcode 15 or later) for Swift Package Manager
 
 ## Installation
 
