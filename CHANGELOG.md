@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Carthage: the Punycode dependency in the Cartfile is raised to 4.0.
 
+### Fixed
+
+- Framework builds set `APPLICATION_EXTENSION_API_ONLY`, so linking the framework from an app extension no longer emits a "not safe for use in application extensions" warning ([#10](https://github.com/futamura/TLDExtractSwift/issues/10)). Not applicable to SPM consumers.
+
 ### Removed
 
 - The Xcode script build phases that reformatted sources and regenerated the bundled Public Suffix List on every build. Builds no longer mutate the working tree (and no longer emit script-sandboxing warnings); refresh the bundled list explicitly with `python update-psl.py`.
