@@ -163,7 +163,7 @@ import TLDExtractSwift
 let extractor = try! TLDExtract(useFrozenData: true)
 
 ```
-*The Public Suffix List is updated every time the framework is built. By setting userFrozenData to true, TLDExtract loads data which checked out from the repository.
+*In SPM builds the default initializer downloads the live Public Suffix List; setting `useFrozenData` to true uses the bundled snapshot instead. Framework builds always use the bundled list, which is regenerated with `python update-psl.py`.
 
 ### Extraction
 

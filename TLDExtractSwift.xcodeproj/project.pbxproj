@@ -132,8 +132,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7450B622C7B186700D659D7 /* Build configuration list for PBXNativeTarget "TLDExtractSwift" */;
 			buildPhases = (
-				A7058D3A2C7C37F0007334E2 /* Lint codes with swift-fromat */,
-				A7450B7E2C7B1A0E00D659D7 /* Update Public Suffix List */,
 				A7450B4B2C7B186700D659D7 /* Headers */,
 				A7450B4C2C7B186700D659D7 /* Sources */,
 				A7450B4D2C7B186700D659D7 /* Frameworks */,
@@ -223,44 +221,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A7058D3A2C7C37F0007334E2 /* Lint codes with swift-fromat */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Lint codes with swift-fromat";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/zsh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swift-format >/dev/null; then\n    swift-format format --in-place --ignore-unparsable-files --configuration .swift-format --recursive Sources Tests || true\n    swift-format lint --ignore-unparsable-files --configuration .swift-format --recursive Sources Tests || true\nelse\n    echo \"warning: swift-format not installed\"\nfi\n";
-		};
-		A7450B7E2C7B1A0E00D659D7 /* Update Public Suffix List */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Update Public Suffix List";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which python3 > /dev/null; then\n    python3 ./update-psl.py\nelse\n    echo \"warning: Python 3 not installed\"\nfi\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
