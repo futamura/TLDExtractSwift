@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Full git history is needed to get a proper list of changed files
       - name: Lint
@@ -65,13 +65,13 @@ jobs:
             name: "Test: macOS 15, Xcode 16.4"
             coverage: NO
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: ${{ matrix.name }}
         run: |-
           set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "${{ env.project_name }}.xcodeproj" -scheme ${{ env.scheme }} -destination "platform=macOS" -enableCodeCoverage ${{ matrix.coverage }} clean test | xcbeautify --renderer github-actions
       - name: Upload coverage to Codecov
         if: ${{ matrix.coverage == 'YES' }}
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
@@ -83,7 +83,7 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Catalyst
         run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "${{ env.project_name }}.xcodeproj" -scheme ${{ env.scheme }} -destination "platform=macOS,variant=Mac Catalyst" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO clean test 2>&1 | xcbeautify --renderer github-actions
     needs: lint_code
@@ -134,7 +134,7 @@ jobs:
             runsOn: macos-26
             name: "Test: visionOS, Xcode 26"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: ${{ matrix.name }}
         run: |
           set -o pipefail
@@ -163,7 +163,7 @@ jobs:
           - runsOn: macos-15
             name: "SPM: macOS 15, Xcode 16.4"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Test SPM
         run: swift test -c debug 2>&1 | xcbeautify --renderer github-actions
     needs: [test_macOS, test_Catalyst, test_simulators]
@@ -174,7 +174,7 @@ jobs:
     timeout-minutes: 10
     container: swift:6.2
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Test SPM
         run: swift test -c debug
     needs: [test_macOS, test_Catalyst, test_simulators]
