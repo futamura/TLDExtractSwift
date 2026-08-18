@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.1] - 2026-08-18
+
 ### Changed
 
-- Carthage: the Punycode dependency in the Cartfile is raised to 4.0.
+- Carthage: the Punycode dependency in the Cartfile is raised to 4.0, and the resolved version is updated to PunycodeSwift 4.0.1.
 
 ### Fixed
 
@@ -99,7 +101,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release: extraction of root domain, top-level domain, second-level domain, and subdomain from URLs and hostnames using the Public Suffix List, with IDNA support.
 
-[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/4.0.0...HEAD
+[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/4.0.1...HEAD
+[4.0.1]: https://github.com/futamura/TLDExtractSwift/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/futamura/TLDExtractSwift/compare/3.0.0...4.0.0
 [3.0.0]: https://github.com/futamura/TLDExtractSwift/compare/2.1.1...3.0.0
 [2.1.1]: https://github.com/futamura/TLDExtractSwift/compare/2.1.0...2.1.1
