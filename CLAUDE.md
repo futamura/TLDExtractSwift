@@ -62,7 +62,9 @@ Source files in `Sources/`:
 - **SPM build**: `useFrozenData: true` uses the embedded `SPM_PSL` string; `false` (default) synchronously downloads https://publicsuffix.org/list/public_suffix_list.dat at init. During parsing, each PSL line is additionally registered in its IDNA-encoded form via PunycodeSwift (`line.idnaEncoded`).
 - **Framework build** (Xcode/Carthage): loads `Resources/public_suffix_list.dat` (or `public_suffix_list_frozen.dat` when `useFrozenData: true`) from the framework bundle via `Bundle.current`. No IDNA pass at parse time — punycoded rules are pre-baked into the `.dat` file.
 
-`update-psl.py` regenerates `Resources/public_suffix_list.dat`: downloads the latest PSL, strips comments and blank lines, and inserts a punycode-encoded variant after each internationalized rule. It does not touch `SPMPSL.swift` or `public_suffix_list_frozen.dat` — those are frozen snapshots.
+`update-psl.py` downloads the latest PSL, strips comments and blank lines, inserts a punycode-encoded variant after each internationalized rule, and writes the result to all three bundled copies: `Resources/public_suffix_list.dat`, `Resources/public_suffix_list_frozen.dat`, and the `SPM_PSL` literal in `Sources/SPMPSL.swift` (substituted in place, so the file's header is preserved). The three therefore hold identical data; `useFrozenData` selects between a bundled snapshot and a live download only on the SPM path.
+
+`.github/workflows/update-psl.yml` runs the script weekly (Monday 03:00 UTC, plus manual dispatch). When the list changed it runs `swift test` in the `swift:6.2` container against the refreshed data and opens a pull request against `develop` only if those tests pass. That in-workflow run is the real gate: a pull request opened with `GITHUB_TOKEN` does not trigger workflows, so the pull request itself usually shows no checks (close and reopen it to start them, or set the `PSL_UPDATE_TOKEN` secret to a PAT — the workflow prefers that secret when present).
 
 Tests live in `Tests/TLDExtractSwiftTests.swift` (single XCTest file; SPM test target name is `TLDExtractSwiftTests`).
 
