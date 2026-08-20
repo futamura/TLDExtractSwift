@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - A weekly workflow that refreshes the bundled Public Suffix List, runs the test suite against the new data, and opens a pull request when it changed.
+- Swift Package Index listing, with an `.spi.yml` that has SPI build and host the DocC documentation alongside the GitHub Pages site. The README gains the SPI Swift version and platform compatibility badges.
 
 ### Changed
 
