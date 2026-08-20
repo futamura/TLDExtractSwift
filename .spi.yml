@@ -1,4 +1,8 @@
 version: 1
+# Overrides the author line SPI derives from the commit history, which still
+# credits the repository's former `gumob` handle.
+metadata:
+  authors: Kojiro Futamura and contributors
 builder:
   configs:
     - documentation_targets: [TLDExtractSwift]
