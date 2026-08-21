@@ -4,7 +4,6 @@
 [![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Ffutamura%2FTLDExtractSwift%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/futamura/TLDExtractSwift)
 [![Build](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml/badge.svg)](https://github.com/futamura/TLDExtractSwift/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/futamura/TLDExtractSwift/branch/main/graph/badge.svg)](https://codecov.io/gh/futamura/TLDExtractSwift)
-![Language](https://img.shields.io/badge/Language-Swift%205.9-orange.svg)
 ![License](https://img.shields.io/github/license/futamura/TLDExtractSwift.svg)
 
 # TLDExtract
