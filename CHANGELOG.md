@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Maintainer tooling: `CLAUDE.md` records how the two simulator CI flakes present and how to tell them apart, and why `.spi.yml` changes take up to a day to show on the Swift Package Index page. The lint job gains the `timeout-minutes` the other jobs already had.
+
 ### Removed
 
 - The hardcoded "Language: Swift 5.9" README badge. It duplicated the Swift Package Index Swift version badge, which reports the versions the package actually builds against instead of a number kept up to date by hand.
