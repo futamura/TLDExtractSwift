@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- The hardcoded "Language: Swift 5.9" README badge. It duplicated the Swift Package Index Swift version badge, which reports the versions the package actually builds against instead of a number kept up to date by hand.
+
 ### Fixed
 
 - The author line on the Swift Package Index page reads as a sentence again. SPI renders `metadata.authors` from `.spi.yml` verbatim, without the "Written by" prefix and full stop it adds to the line it derives from the commit history, so the value now carries them itself.
