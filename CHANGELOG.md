@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- The bundled Public Suffix List is refreshed. `aivencloud.com` is no longer a rule of its own, so the bare host now parses as a registrable domain under `com`; the `*.aivencloud.com` wildcard is unchanged. `claudeusercontent.com` and `frame.claudeusercontent.com` are added.
+
 ## [4.0.3] - 2026-08-22
 
 ### Added
