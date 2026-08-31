@@ -7438,7 +7438,6 @@ africa.com
 *.auiusercontent.com
 beep.pl
 aiven.app
-aivencloud.com
 *.aivencloud.com
 akadns.net
 akamai.net
@@ -8314,6 +8313,8 @@ eero-stage.online
 opentunnel.xyz
 antagonist.cloud
 claude.app
+claudeusercontent.com
+frame.claudeusercontent.com
 *.cursorusercontent.com
 apigee.io
 panel.dev
