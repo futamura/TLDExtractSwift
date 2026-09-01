@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The bundled Public Suffix List is refreshed. `aivencloud.com` is no longer a rule of its own, so the bare host now parses as a registrable domain under `com`; the `*.aivencloud.com` wildcard is unchanged. `claudeusercontent.com` and `frame.claudeusercontent.com` are added.
 
+### Fixed
+
+- Maintainer tooling: the performance measurements no longer fail the Linux test job. Apple's XCTest treats a relative standard deviation over its 10% limit as information when no baseline is recorded, but swift-corelibs-xctest fails the test and offers no API to relax the limit, so a single slow iteration on a shared runner turned the build red. On Linux the blocks now run once untimed, which keeps the assertions inside them - the only coverage the extraction paths have - while giving up only the timing. This had already cost a week of Public Suffix List updates, since the weekly refresh workflow gates its pull request on `swift test` in a Linux container.
+- Maintainer tooling: the simulator test jobs retry once when `xcodebuild` aborts with exit code 134, which the simulator does during teardown after every test has already run. Any other non-zero status still fails the job immediately.
+
 ## [4.0.3] - 2026-08-22
 
 ### Added
