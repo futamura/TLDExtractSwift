@@ -18,9 +18,30 @@ class TLDExtractSwiftTests: XCTestCase {
         tldExtractor = try? TLDExtract(useFrozenData: false)
     }
 
+    /// Runs `block` under `measure` everywhere except Linux, where it runs once untimed.
+    ///
+    /// Apple's XCTest reports a relative standard deviation over its 10% limit as
+    /// information when no baseline is recorded, and none is here; swift-corelibs-xctest
+    /// fails the test instead, and exposes no API to relax the limit. A single slow
+    /// iteration on a shared runner is enough to trip it, and that already cost a week of
+    /// Public Suffix List updates, because the weekly refresh workflow gates its pull
+    /// request on `swift test` in a Linux container. The assertions inside these blocks
+    /// are the only coverage the extraction paths get, so Linux keeps running them and
+    /// gives up only the timing.
+    private func measureIfSupported(_ block: () -> Void) {
+        #if os(Linux)
+        block()
+        #else
+        self.measure(block)
+        #endif
+    }
+
+    /// Measures parsing rather than the network: on the SPM path `TLDExtract()` defaults
+    /// to `useFrozenData: false` and downloads the list, so the ten iterations `measure`
+    /// runs would time ten HTTP downloads.
     func testMeasureSetupTime() {
-        self.measure {
-            _ = try? TLDExtract()
+        measureIfSupported {
+            _ = try? TLDExtract(useFrozenData: true)
         }
     }
 
@@ -59,20 +80,20 @@ class TLDExtractSwiftTests: XCTestCase {
     }
 
     func testMeasureExtractable() {
-        self.measure {
+        measureIfSupported {
             testExtractableURL()
             testExtractableString()
         }
     }
 
     func testMeasureParser() {
-        self.measure {
+        measureIfSupported {
             testTLDExtractString(quick: false)
         }
     }
 
     func testMeasureParserQuick() {
-        self.measure {
+        measureIfSupported {
             testTLDExtractString(quick: true)
         }
     }

@@ -148,7 +148,23 @@ jobs:
             exit 1
           fi
           echo "Testing on simulator: $device"
-          env NSUnbufferedIO=YES xcodebuild -project "${{ env.project_name }}.xcodeproj" -scheme ${{ env.scheme }} -destination "platform=${{ matrix.platform }} Simulator,name=$device" clean test 2>&1 | xcbeautify --renderer github-actions
+          run_tests() {
+            env NSUnbufferedIO=YES xcodebuild -project "${{ env.project_name }}.xcodeproj" -scheme ${{ env.scheme }} -destination "platform=${{ matrix.platform }} Simulator,name=$device" clean test 2>&1 | xcbeautify --renderer github-actions
+          }
+          ### The simulator sometimes runs every test and then aborts during teardown
+          ### with SIGABRT (exit 134), which is a simulator fault rather than a failing
+          ### test. Retry once on 134 alone; any other non-zero status is a real failure
+          ### and fails the job straight away.
+          set +e
+          run_tests
+          status=$?
+          set -e
+          if [ "$status" -eq 134 ]; then
+            echo "::warning::xcodebuild aborted with 134 after the tests had finished; retrying once."
+            run_tests
+          elif [ "$status" -ne 0 ]; then
+            exit "$status"
+          fi
     needs: lint_code
 
   SPM:
