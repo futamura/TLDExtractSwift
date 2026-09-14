@@ -9383,6 +9383,8 @@ cloud.goog
 translate.goog
 *.usercontent.goog
 cloudfunctions.net
+cloud.run
+ai.studio
 goupile.fr
 pymnt.uk
 gov.nl
