@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Maintainer tooling: `update-psl.py` now writes the changelog entry for a refresh. It diffs the bundled list against the freshly downloaded one as sets of rules, so a rule that only moved is not reported, collapses a parent suffix that gained five or more rules into a single count, and appends one bullet under **Unreleased**. `test_update_psl.py` covers the diff, the grouping, the rendering and the changelog surgery without touching the network, and the refresh workflow runs it before the download.
 
+### Changed
+
+- The bundled Public Suffix List is refreshed. Added: `ai.studio`, `cloud.run`.
+
 ## [4.0.5] - 2026-09-08
 
 ### Changed
