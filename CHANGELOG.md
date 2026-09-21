@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - The bundled Public Suffix List is refreshed. Added: `ai.studio`, `cloud.run`.
+- The bundled Public Suffix List is refreshed. Added: `*.compute.herokuapp.com`, `hosted-by-files.com`, `surge.sh`. Removed: `alpha-myqnapcloud.com`, `dev-myqnapcloud.com` — hosts under a removed rule now parse as registrable domains under its parent suffix.
 
 ## [4.0.5] - 2026-09-08
 
