@@ -9177,6 +9177,7 @@ figma.site
 figma-gov.site
 preview.site
 filegear.me
+hosted-by-files.com
 firebaseapp.com
 fldrv.com
 on-fleek.app
@@ -9383,6 +9384,8 @@ cloud.goog
 translate.goog
 *.usercontent.goog
 cloudfunctions.net
+cloud.run
+ai.studio
 goupile.fr
 pymnt.uk
 gov.nl
@@ -9417,6 +9420,7 @@ hercules-app.com
 hercules-dev.com
 here.now
 herokuapp.com
+*.compute.herokuapp.com
 heyflow.page
 heyflow.site
 ravendb.cloud
@@ -10203,8 +10207,6 @@ qa2.com
 qcx.io
 *.sys.qcx.io
 myqnapcloud.cn
-alpha-myqnapcloud.com
-dev-myqnapcloud.com
 mycloudnas.com
 mynascloud.com
 myqnapcloud.com
@@ -10574,6 +10576,7 @@ realtime.supabase.co
 storage.supabase.co
 supabase.in
 supabase.net
+surge.sh
 syncloud.it
 dscloud.biz
 direct.quickconnect.cn

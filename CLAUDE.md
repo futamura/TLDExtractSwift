@@ -19,8 +19,11 @@ swift test --filter TLDExtractSwiftTests/<testMethodName>
 # Lint (enforced in CI via swift-format, not SwiftLint)
 swift-format lint --ignore-unparsable-files --configuration .swift-format --recursive Sources Tests
 
-# Update the bundled Public Suffix List (rewrites Resources/public_suffix_list.dat)
+# Update the bundled Public Suffix List (rewrites the .dat resources, SPMPSL.swift and CHANGELOG.md)
 python update-psl.py
+
+# Test the refresh script (pure helpers only; no network)
+python -m unittest discover -p "test_*.py"
 
 # Fastlane lanes (require `bundle install` first; Ruby/Python managed by mise)
 bundle exec fastlane tests            # xcodebuild tests on all platforms (macOS/iOS/tvOS/watchOS/visionOS) + slather coverage
@@ -65,6 +68,10 @@ Source files in `Sources/`:
 - **Framework build** (Xcode/Carthage): loads `Resources/public_suffix_list.dat` (or `public_suffix_list_frozen.dat` when `useFrozenData: true`) from the framework bundle via `Bundle.current`. No IDNA pass at parse time — punycoded rules are pre-baked into the `.dat` file.
 
 `update-psl.py` downloads the latest PSL, strips comments and blank lines, inserts a punycode-encoded variant after each internationalized rule, and writes the result to all three bundled copies: `Resources/public_suffix_list.dat`, `Resources/public_suffix_list_frozen.dat`, and the `SPM_PSL` literal in `Sources/SPMPSL.swift` (substituted in place, so the file's header is preserved). The three therefore hold identical data; `useFrozenData` selects between a bundled snapshot and a live download only on the SPM path.
+
+The script also writes the changelog entry. It reads the bundled `.dat` before overwriting it — that file is the only record of the previous snapshot — diffs the two as sets of rules, so a rule that merely moved is not reported, and puts one bullet under **Unreleased** / **Changed** in `CHANGELOG.md`. Rules are named individually until `GROUP_THRESHOLD` (5) of them share a parent suffix, at which point the group collapses to `71 rules under \`azurewebsites.net\`` — a registry that adds one rule per region would otherwise bury the section. The punycoded variant the script itself appends after an internationalized rule is dropped from the additions. Each refresh appends its own bullet rather than replacing the one before it, and that is deliberate: the diff is taken against the bundled list, so a second refresh landing before a release reports only what changed since the first, and replacing would drop the first refresh's rules from the release notes. A run that finds the list unchanged writes nothing, so re-running never stacks a duplicate. The wording is generated, so reword it when a change deserves more than the rule names.
+
+`test_update_psl.py` covers those helpers — the diff, the grouping, the rendering and the changelog surgery — with no network and no writes; it loads the script by path because `update-psl.py` is not an importable module name. `update-psl.yml` runs it before the refresh.
 
 `.github/workflows/update-psl.yml` runs the script weekly (Monday 03:00 UTC, plus manual dispatch). When the list changed it runs `swift test` in the `swift:6.2` container against the refreshed data and opens a pull request against `develop` only if those tests pass. That in-workflow run is a gate in its own right, and it is worth keeping green for that reason: a failure there means no pull request at all, so a flaky test silently costs a week of updates.
 
