@@ -5,7 +5,7 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.0.6] - 2026-09-23
 
 ### Added
 
@@ -13,8 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- The bundled Public Suffix List is refreshed. Added: `ai.studio`, `cloud.run`.
-- The bundled Public Suffix List is refreshed. Added: `*.compute.herokuapp.com`, `hosted-by-files.com`, `surge.sh`. Removed: `alpha-myqnapcloud.com`, `dev-myqnapcloud.com` — hosts under a removed rule now parse as registrable domains under its parent suffix.
+- The bundled Public Suffix List is refreshed. `alpha-myqnapcloud.com` and `dev-myqnapcloud.com` are no longer rules, so hosts under them now parse as registrable domains under `com`. `ai.studio`, `cloud.run`, `*.compute.herokuapp.com`, `hosted-by-files.com` and `surge.sh` are added.
 
 ## [4.0.5] - 2026-09-08
 
@@ -157,7 +156,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release: extraction of root domain, top-level domain, second-level domain, and subdomain from URLs and hostnames using the Public Suffix List, with IDNA support.
 
-[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/4.0.5...HEAD
+[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/4.0.6...HEAD
+[4.0.6]: https://github.com/futamura/TLDExtractSwift/compare/4.0.5...4.0.6
 [4.0.5]: https://github.com/futamura/TLDExtractSwift/compare/4.0.4...4.0.5
 [4.0.4]: https://github.com/futamura/TLDExtractSwift/compare/4.0.3...4.0.4
 [4.0.3]: https://github.com/futamura/TLDExtractSwift/compare/4.0.2...4.0.3
