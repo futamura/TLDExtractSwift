@@ -8538,8 +8538,10 @@ co.nl
 co.no
 *.devinapps.com
 webhosting.be
+site.webhosting.be
 prvw.eu
 hosting-cluster.nl
+site.hosting-cluster.nl
 ctfcloud.net
 convex.app
 convex.cloud
@@ -8576,6 +8578,10 @@ store.dk
 dyndns.dappnode.io
 builtwithdark.com
 darklang.io
+aws.databricksapps.com
+*.azure.databricksapps.com
+gcp.databricksapps.com
+aws-gov.databricksapps.us
 demo.datadetect.com
 instance.datadetect.com
 edgestack.me
@@ -9252,6 +9258,7 @@ github.io
 gitlab.io
 gitapp.si
 gitpage.si
+glideos.app
 nog.community
 co.ro
 shop.ro
@@ -9530,6 +9537,7 @@ ipifony.net
 home64.de
 ipv64.de
 ipv64.net
+iqhs.pl
 ir.md
 is-a-good.dev
 iservschule.de
