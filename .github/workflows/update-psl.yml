@@ -41,10 +41,9 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
-      ### The pull request this job opens carries no checks of its own (see the
-      ### token note below), so the parser is exercised against the new list
-      ### here instead. A list that breaks the tests fails this run and never
-      ### reaches a pull request.
+      ### The parser is exercised against the new list before any pull request
+      ### exists. A list that breaks the tests fails this run and never reaches
+      ### a pull request.
       - name: Test against the refreshed list
         if: steps.check.outputs.changed == 'true'
         run: docker run --rm -v "$PWD:/package" -w /package swift:6.2 swift test -c debug
@@ -58,6 +57,13 @@ jobs:
           token: ${{ secrets.PSL_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
           base: develop
           branch: chore/update-psl
+          ### Commit only what update-psl.py writes. Anything else the earlier
+          ### steps leave in the tree (bytecode, build output) stays out.
+          add-paths: |
+            CHANGELOG.md
+            Resources/public_suffix_list.dat
+            Resources/public_suffix_list_frozen.dat
+            Sources/SPMPSL.swift
           commit-message: "chore: refresh the bundled Public Suffix List"
           title: "chore: refresh the bundled Public Suffix List"
           body: |
@@ -69,7 +75,7 @@ jobs:
             the rule names.
 
             The parser tests already ran against this list in the workflow that
-            opened the pull request. Checks may be absent here — a pull request
-            opened with `GITHUB_TOKEN` does not trigger workflows; close and
-            reopen it to start them.
+            opened the pull request. If no checks appear here, the pull request
+            was opened with `GITHUB_TOKEN` because `PSL_UPDATE_TOKEN` is missing
+            or empty; close and reopen it to start them, and restore the secret.
           delete-branch: true
