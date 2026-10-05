@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- The bundled Public Suffix List is refreshed. Removed: `juniper` — hosts under a removed rule now parse as registrable domains under its parent suffix.
+- The bundled Public Suffix List is refreshed. `juniper` is no longer a rule, and since it was a top-level rule there is no parent suffix to fall back to: `parse` now returns `nil` for hosts under it, such as `www.juniper`, instead of reporting `juniper` as their top-level domain.
 
 ## [4.0.7] - 2026-10-05
 
