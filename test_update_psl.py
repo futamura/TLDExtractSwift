@@ -83,6 +83,30 @@ class RenderEntryTest(unittest.TestCase):
             'Removed: `b.example` — hosts under a removed rule now parse as registrable '
             'domains under its parent suffix.')
 
+    def test_explains_that_a_removed_top_level_rule_leaves_nothing_to_fall_back_to(self):
+        entry = update_psl.render_entry(set(), {'juniper'})
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. Removed: `juniper` — no parent suffix '
+            'is left to fall back to, so `parse` now returns `nil` for hosts under it.')
+
+    def test_counts_rules_under_a_removed_top_level_rule_as_having_no_fallback(self):
+        entry = update_psl.render_entry(set(), {'juniper', '*.juniper'})
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. Removed: `*.juniper`, `juniper` — no '
+            'parent suffix is left to fall back to, so `parse` now returns `nil` for hosts '
+            'under them.')
+
+    def test_separates_removals_with_and_without_a_parent_suffix(self):
+        entry = update_psl.render_entry(set(), {'juniper', 'b.example'})
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. Removed: `b.example` — hosts under a '
+            'removed rule now parse as registrable domains under its parent suffix. '
+            'Removed: `juniper` — no parent suffix is left to fall back to, so `parse` now '
+            'returns `nil` for hosts under it.')
+
     def test_returns_none_when_nothing_changed(self):
         self.assertIsNone(update_psl.render_entry(set(), set()))
 

@@ -21,6 +21,10 @@ GROUP_THRESHOLD = 5
 ENTRY_PREFIX = 'The bundled Public Suffix List is refreshed.'
 REMOVAL_EFFECT = (' — hosts under a removed rule now parse as registrable domains under its '
                   'parent suffix.')
+# A removed top-level rule takes its whole namespace with it: no suffix is left
+# for its hosts to match, so the library returns nil instead of falling back.
+ORPHANED_REMOVAL_EFFECT = (' — no parent suffix is left to fall back to, so `parse` now returns '
+                           '`nil` for hosts under %s.')
 UNRELEASED_HEADING = '## [Unreleased]'
 
 
@@ -99,6 +103,17 @@ def summarize_rules(rules):
     return ', '.join(fragments)
 
 
+def split_orphaned(removed):
+    """Split removed rules by whether their hosts still have a suffix to fall back to.
+
+    A top-level rule has no parent, and a rule whose top-level label is removed in
+    the same refresh loses its parent along with it.
+    """
+    removed_tlds = {rule for rule in removed if '.' not in rule}
+    orphaned = {rule for rule in removed if rule.rsplit('.', 1)[-1] in removed_tlds}
+    return removed - orphaned, orphaned
+
+
 def render_entry(added, removed):
     """Render the changelog bullet for a refresh, or None when nothing changed."""
     if not added and not removed:
@@ -106,8 +121,12 @@ def render_entry(added, removed):
     parts = [ENTRY_PREFIX]
     if added:
         parts.append('Added: %s.' % summarize_rules(added))
-    if removed:
-        parts.append('Removed: %s%s' % (summarize_rules(removed), REMOVAL_EFFECT))
+    with_parent, orphaned = split_orphaned(removed)
+    if with_parent:
+        parts.append('Removed: %s%s' % (summarize_rules(with_parent), REMOVAL_EFFECT))
+    if orphaned:
+        pronoun = 'it' if len(orphaned) == 1 else 'them'
+        parts.append('Removed: %s%s' % (summarize_rules(orphaned), ORPHANED_REMOVAL_EFFECT % pronoun))
     return ' '.join(parts)
 
 
