@@ -6703,7 +6703,6 @@ joy
 jpmorgan
 jprs
 juegos
-juniper
 kaufen
 kddi
 kerryhotels
