@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - The bundled Public Suffix List is refreshed. `juniper` is no longer a rule, and since it was a top-level rule there is no parent suffix to fall back to: `parse` now returns `nil` for hosts under it, such as `www.juniper`, instead of reporting `juniper` as their top-level domain.
+- The bundled Public Suffix List is refreshed. Added: 5 rules under `elasticbeanstalk.com`, `*.ap-east-1.cs.amazonlightsail.com`, `*.ap-northeast-1.cs.amazonlightsail.com`, `*.ap-northeast-2.cs.amazonlightsail.com`, `*.ap-south-1.cs.amazonlightsail.com`, `*.ap-southeast-1.cs.amazonlightsail.com`, `*.ap-southeast-2.cs.amazonlightsail.com`, `*.ap-southeast-3.cs.amazonlightsail.com`, `*.ap-southeast-5.cs.amazonlightsail.com`, `*.ca-central-1.cs.amazonlightsail.com`, `*.eu-central-1.cs.amazonlightsail.com`, `*.eu-north-1.cs.amazonlightsail.com`, `*.eu-south-2.cs.amazonlightsail.com`, `*.eu-west-1.cs.amazonlightsail.com`, `*.eu-west-2.cs.amazonlightsail.com`, `*.eu-west-3.cs.amazonlightsail.com`, `*.replit.dev`, `*.sa-east-1.cs.amazonlightsail.com`, `*.teams.replit.dev`, `*.us-east-1.cs.amazonlightsail.com`, `*.us-east-2.cs.amazonlightsail.com`, `*.us-west-2.cs.amazonlightsail.com`, `amazonlightsail.com`, `auth.ap-east-2.amazoncognito.com`, `auth.ap-southeast-6.amazoncognito.com`, `retool.app`. Removed: 26 rules under `replit.dev`, `replit.dev` — hosts under a removed rule now parse as registrable domains under its parent suffix.
 
 ## [4.0.7] - 2026-10-05
 
