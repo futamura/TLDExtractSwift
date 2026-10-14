@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - The bundled Public Suffix List is refreshed. `juniper` is no longer a rule, and since it was a top-level rule there is no parent suffix to fall back to: `parse` now returns `nil` for hosts under it, such as `www.juniper`, instead of reporting `juniper` as their top-level domain.
+- The bundled Public Suffix List is refreshed. Added: 5 rules under `elasticbeanstalk.com`, `amazonlightsail.com` and a `*.<region>.cs.amazonlightsail.com` wildcard for 19 regions, `auth.ap-east-2.amazoncognito.com`, `auth.ap-southeast-6.amazoncognito.com`, `retool.app`. The 26 individual rules under `replit.dev`, and `replit.dev` itself, are replaced by the wildcards `*.replit.dev` and `*.teams.replit.dev`. Hosts under the former rules, such as `x.archer.replit.dev`, parse as before, but `replit.dev` is now a registrable domain under `dev`, and every label directly under it is a public suffix: `parse` now returns `nil` for `foo.replit.dev` and treats `a.foo.replit.dev` as its root domain.
 
 ## [4.0.7] - 2026-10-05
 
