@@ -10,7 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - The bundled Public Suffix List is refreshed. `juniper` is no longer a rule, and since it was a top-level rule there is no parent suffix to fall back to: `parse` now returns `nil` for hosts under it, such as `www.juniper`, instead of reporting `juniper` as their top-level domain.
-- The bundled Public Suffix List is refreshed. Added: 5 rules under `elasticbeanstalk.com`, `amazonlightsail.com` and a `*.<region>.cs.amazonlightsail.com` wildcard for 19 regions, `auth.ap-east-2.amazoncognito.com`, `auth.ap-southeast-6.amazoncognito.com`, `retool.app`. The 26 individual rules under `replit.dev`, and `replit.dev` itself, are replaced by the wildcards `*.replit.dev` and `*.teams.replit.dev`. Hosts under the former rules, such as `x.archer.replit.dev`, parse as before, but `replit.dev` is now a registrable domain under `dev`, and every label directly under it is a public suffix: `parse` now returns `nil` for `foo.replit.dev` and treats `a.foo.replit.dev` as its root domain.
+- The bundled Public Suffix List is refreshed. Added: 5 rules under `elasticbeanstalk.com`, `amazonlightsail.com` and a `*.<region>.cs.amazonlightsail.com` wildcard for 19 regions, `auth.ap-east-2.amazoncognito.com`, `auth.ap-southeast-6.amazoncognito.com`, `retool.app`. The 26 individual rules under `replit.dev`, and `replit.dev` itself, are replaced by the wildcards `*.replit.dev` and `*.teams.replit.dev`. Hosts under the former rules, such as `x.archer.replit.dev`, parse as before, but `replit.dev` is now a registrable domain under `dev`, and every label directly under it is a public suffix: `foo.replit.dev` now has no root domain, and `a.foo.replit.dev` is its own root domain.
+
+### Fixed
+
+- `parse` now applies the longest matching rule, as the Public Suffix List specifies. It used to take the first matching wildcard in list order and to skip normal rules whenever a wildcard matched, so a host under a wildcard nested inside another one was parsed against the shorter rule whenever that rule came first: `y.x.teams.replit.dev` reported `teams.replit.dev` as its top-level domain instead of `x.teams.replit.dev`, and the same went for hosts under `*.r.cloud.int.apple`, which `*.cloud.int.apple` shadowed. The bundled list has no normal rule longer than a wildcard that matches it, so the second half changes nothing today. `quick: true` is unaffected, since it only ever consults normal rules.
 
 ## [4.0.7] - 2026-10-05
 
