@@ -79,6 +79,30 @@ class TLDExtractSwiftTests: XCTestCase {
         XCTAssertFalse(exception1 == wildcard1)
     }
 
+    /// The longest matching rule prevails, whatever its kind and wherever it sits in the list.
+    func testRulePrecedence() throws {
+        let frozen: TLDExtract = try TLDExtract(useFrozenData: true)
+
+        /// `*.replit.dev` comes before `*.teams.replit.dev` in the list. A host that is
+        /// itself a public suffix has no root domain.
+        XCTAssertNil(frozen.parse("x.teams.replit.dev")?.rootDomain)
+        XCTAssertNil(frozen.parse("x.teams.replit.dev")?.topLevelDomain)
+        XCTAssertEqual(frozen.parse("y.x.teams.replit.dev")?.rootDomain, "y.x.teams.replit.dev")
+        XCTAssertEqual(frozen.parse("y.x.teams.replit.dev")?.topLevelDomain, "x.teams.replit.dev")
+        /// `*.cloud.int.apple` comes before `*.r.cloud.int.apple`.
+        XCTAssertEqual(frozen.parse("a.b.r.cloud.int.apple")?.rootDomain, "a.b.r.cloud.int.apple")
+        XCTAssertEqual(frozen.parse("a.b.r.cloud.int.apple")?.topLevelDomain, "b.r.cloud.int.apple")
+
+        /// The bundled list has no normal rule longer than a wildcard that matches it.
+        let psl: String = "example\n*.example\na.b.example\n"
+        let parser: TLDParser = TLDParser(dataSet: try PSLParser().parse(data: psl.data(using: .utf8)))
+        XCTAssertEqual(parser.parse(host: "x.a.b.example")?.rootDomain, "x.a.b.example")
+        XCTAssertEqual(parser.parse(host: "x.a.b.example")?.topLevelDomain, "a.b.example")
+        /// A wildcard still prevails over a shorter normal rule.
+        XCTAssertEqual(parser.parse(host: "x.y.example")?.rootDomain, "x.y.example")
+        XCTAssertEqual(parser.parse(host: "x.y.example")?.topLevelDomain, "y.example")
+    }
+
     func testMeasureExtractable() {
         measureIfSupported {
             testExtractableURL()

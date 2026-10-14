@@ -58,7 +58,7 @@ public class TLDExtract {
         if quick {
             return self.tldParser.parseNormals(host: host)
         } else {
-            return self.tldParser.parseExceptionsAndWildcards(host: host) ?? self.tldParser.parseNormals(host: host)
+            return self.tldParser.parse(host: host)
         }
     }
 }

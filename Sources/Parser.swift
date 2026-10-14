@@ -41,9 +41,10 @@ internal class PSLParser {
             }
             #endif
         }
+        /// Longest rules first, so the first match is the one that prevails
         return PSLDataSet(
-            exceptions: exceptions,
-            wildcards: wildcards,
+            exceptions: exceptions.sorted(by: >),
+            wildcards: wildcards.sorted(by: >),
             normals: normals
         )
     }
@@ -57,12 +58,29 @@ internal class TLDParser {
         self.pslDataSet = dataSet
     }
 
-    internal func parseExceptionsAndWildcards(host: String) -> TLDResult? {
+    /// Applies the rule that prevails for the host: an exception if one matches,
+    /// otherwise the longest matching rule, a wildcard winning a tie with a normal rule
+    internal func parse(host: String) -> TLDResult? {
         let hostComponents: [String] = host.lowercased().components(separatedBy: ".")
-        /// Search exceptions first, then search wildcards if not match
         let matchClosure: (PSLData) -> Bool = { $0.matches(hostComponents: hostComponents) }
-        let pslData: PSLData? = self.pslDataSet.exceptions.first(where: matchClosure) ?? self.pslDataSet.wildcards.first(where: matchClosure)
-        return pslData?.parse(hostComponents: hostComponents)
+        if let exception: PSLData = self.pslDataSet.exceptions.first(where: matchClosure) {
+            return exception.parse(hostComponents: hostComponents)
+        }
+        if let wildcard: PSLData = self.pslDataSet.wildcards.first(where: matchClosure),
+            wildcard.tldParts.count >= self.longestNormalMatch(hostComponents: hostComponents)
+        {
+            return wildcard.parse(hostComponents: hostComponents)
+        }
+        return self.parseNormals(host: host)
+    }
+
+    /// The number of labels in the longest normal rule the host matches, or 0 if none does
+    private func longestNormalMatch(hostComponents: [String]) -> Int {
+        for count in stride(from: hostComponents.count, to: 0, by: -1)
+        where self.pslDataSet.normals.contains(hostComponents.suffix(count).joined(separator: ".")) {
+            return count
+        }
+        return 0
     }
 
     internal func parseNormals(host: String) -> TLDResult? {
