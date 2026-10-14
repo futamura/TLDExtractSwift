@@ -25,6 +25,10 @@ REMOVAL_EFFECT = (' — hosts under a removed rule now parse as registrable doma
 # for its hosts to match, so the library returns nil instead of falling back.
 ORPHANED_REMOVAL_EFFECT = (' — no parent suffix is left to fall back to, so `parse` now returns '
                            '`nil` for hosts under %s.')
+# A suffix whose own wildcard replaces it stops being a public suffix, and the
+# labels under it start being ones.
+SUFFIX_REPLACED_EFFECT = ('`%s` gives way to `%s`: it now parses as a registrable domain, and '
+                          'every label directly under it is a public suffix.')
 UNRELEASED_HEADING = '## [Unreleased]'
 
 
@@ -89,7 +93,11 @@ def summarize_rules(rules):
     """
     groups = {}
     for rule in rules:
-        parent = rule.split('.', 1)[1] if '.' in rule else ''
+        # A wildcard sits one label deeper than the rules it groups with, so a
+        # registry adding `*.<region>.cs.example.com` per region is grouped under
+        # `cs.example.com` rather than once per region.
+        labels = rule[2:] if rule.startswith('*.') else rule
+        parent = labels.split('.', 1)[1] if '.' in labels else ''
         groups.setdefault(parent, []).append(rule)
     collapsed = []
     individual = []
@@ -114,13 +122,59 @@ def split_orphaned(removed):
     return removed - orphaned, orphaned
 
 
+def split_replaced(added, removed):
+    """Pair each added wildcard with the removed rules it takes over.
+
+    A registry that swaps its per-host rules for `*.example.dev` removes rules
+    whose hosts still parse the same way, so reporting them as removals would
+    describe a change that never happens. Only a rule exactly one label under the
+    wildcard's suffix is covered; one further down loses its rule like any other.
+    The suffix itself is paired too when it is removed in the same refresh, since
+    its own behaviour does change, unless a wildcard one level up still covers
+    it. A top-level suffix is left out: it has no parent to become registrable
+    under.
+    """
+    replaced = {}
+    for wildcard in added:
+        if not wildcard.startswith('*.'):
+            continue
+        suffix = wildcard[2:]
+        covered = {rule for rule in removed
+                   if '*' not in rule and not rule.startswith('!') and '.' in rule
+                   and rule.split('.', 1)[1] == suffix}
+        if (suffix in removed and '.' in suffix
+                and '*.' + suffix.split('.', 1)[1] not in added):
+            covered.add(suffix)
+        if covered:
+            replaced[wildcard] = covered
+    return replaced
+
+
+def render_replacement(wildcard, covered):
+    suffix = wildcard[2:]
+    children = covered - {suffix}
+    sentences = []
+    if children:
+        pronoun = 'it' if len(children) == 1 else 'them'
+        sentences.append('`%s` replaces %s, so hosts under %s parse as before.'
+                         % (wildcard, summarize_rules(children), pronoun))
+    if suffix in covered:
+        sentences.append(SUFFIX_REPLACED_EFFECT % (suffix, wildcard))
+    return ' '.join(sentences)
+
+
 def render_entry(added, removed):
     """Render the changelog bullet for a refresh, or None when nothing changed."""
     if not added and not removed:
         return None
+    replaced = split_replaced(added, removed)
+    added = added - set(replaced)
+    removed = removed - set().union(*replaced.values())
     parts = [ENTRY_PREFIX]
     if added:
         parts.append('Added: %s.' % summarize_rules(added))
+    for wildcard in sorted(replaced):
+        parts.append(render_replacement(wildcard, replaced[wildcard]))
     with_parent, orphaned = split_orphaned(removed)
     if with_parent:
         parts.append('Removed: %s%s' % (summarize_rules(with_parent), REMOVAL_EFFECT))
