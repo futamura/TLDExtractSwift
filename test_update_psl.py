@@ -107,6 +107,58 @@ class RenderEntryTest(unittest.TestCase):
             'Removed: `juniper` — no parent suffix is left to fall back to, so `parse` now '
             'returns `nil` for hosts under it.')
 
+    def test_collapses_wildcard_rules_by_the_suffix_they_sit_under(self):
+        # Each `*.<region>.cs.example.com` has its own parent, so grouping on the
+        # literal parent would list every region individually.
+        added = {'*.r%d.cs.example.com' % i for i in range(5)}
+        entry = update_psl.render_entry(added, set())
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. '
+            'Added: 5 rules under `cs.example.com`.')
+
+    def test_reports_rules_a_new_wildcard_covers_as_replaced(self):
+        entry = update_psl.render_entry({'*.example.dev'}, {'a.example.dev', 'b.example.dev'})
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. `*.example.dev` replaces '
+            '`a.example.dev`, `b.example.dev`, so hosts under them parse as before.')
+
+    def test_explains_a_suffix_replaced_by_its_own_wildcard(self):
+        entry = update_psl.render_entry({'*.example.dev'}, {'example.dev'})
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. `example.dev` gives way to '
+            '`*.example.dev`: it now parses as a registrable domain, and every label directly '
+            'under it is a public suffix.')
+
+    def test_describes_a_wildcard_that_replaces_both_a_suffix_and_the_rules_under_it(self):
+        entry = update_psl.render_entry({'*.replit.dev'}, {'replit.dev', 'archer.replit.dev'})
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. `*.replit.dev` replaces '
+            '`archer.replit.dev`, so hosts under it parse as before. `replit.dev` gives way to '
+            '`*.replit.dev`: it now parses as a registrable domain, and every label directly '
+            'under it is a public suffix.')
+
+    def test_keeps_a_suffix_that_a_wider_wildcard_still_covers_as_a_suffix(self):
+        # `teams.replit.dev` matches `*.replit.dev`, so it stays a public suffix even
+        # though its own rule is gone and `*.teams.replit.dev` arrived beside it.
+        entry = update_psl.render_entry({'*.replit.dev', '*.teams.replit.dev'},
+                                        {'teams.replit.dev'})
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. Added: `*.teams.replit.dev`. '
+            '`*.replit.dev` replaces `teams.replit.dev`, so hosts under it parse as before.')
+
+    def test_does_not_count_a_rule_two_labels_down_as_covered_by_a_wildcard(self):
+        entry = update_psl.render_entry({'*.example.dev'}, {'x.a.example.dev'})
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. Added: `*.example.dev`. '
+            'Removed: `x.a.example.dev` — hosts under a removed rule now parse as registrable '
+            'domains under its parent suffix.')
+
     def test_returns_none_when_nothing_changed(self):
         self.assertIsNone(update_psl.render_entry(set(), set()))
 
