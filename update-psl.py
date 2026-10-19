@@ -14,7 +14,8 @@ from urllib.request import urlopen
 
 PSL_URL = 'https://publicsuffix.org/list/public_suffix_list.dat'
 SPM_PSL_PATTERN = re.compile(r'(let SPM_PSL = """\n).*?(\n""")', re.DOTALL)
-# Rules sharing a parent suffix are collapsed once this many of them change.
+# Rules that differ in one label, or share a domain, are collapsed once this many
+# of them change.
 GROUP_THRESHOLD = 5
 # Every bullet opens with this, so an unreleased section that saw more than one
 # refresh reads as a list of them.
@@ -91,24 +92,70 @@ def summarize_rules(rules):
     A registry that adds a rule per region contributes dozens of near-identical
     entries; naming the parent once keeps the changelog readable.
     """
-    groups = {}
-    for rule in rules:
-        # A wildcard sits one label deeper than the rules it groups with, so a
-        # registry adding `*.<region>.cs.example.com` per region is grouped under
-        # `cs.example.com` rather than once per region.
-        labels = rule[2:] if rule.startswith('*.') else rule
-        parent = labels.split('.', 1)[1] if '.' in labels else ''
-        groups.setdefault(parent, []).append(rule)
+    remaining = set(rules)
     collapsed = []
-    individual = []
-    for parent, members in groups.items():
-        if parent and len(members) >= GROUP_THRESHOLD:
-            collapsed.append((parent, '%d rules under `%s`' % (len(members), parent)))
+
+    # First, rules that differ in a single label. When that label is the leftmost
+    # one they share a parent; when it sits further in, as with
+    # `consent-portal.<region>.example.com`, every rule has its own parent and only
+    # the pattern ties them together. The top-level label is never the varying
+    # one: rules under different TLDs have nothing in common worth naming.
+    patterns = {}
+    for rule in remaining:
+        for key in _patterns(rule):
+            patterns.setdefault(key, set()).add(rule)
+    while True:
+        candidates = [(len(members & remaining), key) for key, members in patterns.items()]
+        count, key = max(candidates, default=(0, None))
+        if count < GROUP_THRESHOLD:
+            break
+        remaining -= patterns[key]
+        kind, text = key
+        if kind == 'under':
+            collapsed.append((text, '%d rules under `%s`' % (count, text)))
         else:
-            individual.extend(members)
+            collapsed.append((text, '%d rules of the form `%s`' % (count, text)))
+
+    # Then whatever is left under one domain, however its rules are nested. The
+    # last two labels stand in for the registrable domain, and the group is named
+    # after the longest suffix its rules share.
+    domains = {}
+    for rule in remaining:
+        labels = _labels(rule)
+        if len(labels) > 2:
+            domains.setdefault(tuple(labels[-2:]), []).append(labels)
+    for members in domains.values():
+        if len(members) < GROUP_THRESHOLD:
+            continue
+        shared = members[0]
+        for labels in members[1:]:
+            while labels[-len(shared):] != shared:
+                shared = shared[1:]
+        suffix = '.'.join(shared)
+        remaining -= {rule for rule in remaining if _labels(rule) in members}
+        collapsed.append((suffix, '%d rules under `%s`' % (len(members), suffix)))
+
     fragments = [text for _, text in sorted(collapsed)]
-    fragments.extend('`%s`' % rule for rule in sorted(individual))
+    fragments.extend('`%s`' % rule for rule in sorted(remaining))
     return ', '.join(fragments)
+
+
+def _labels(rule):
+    # A wildcard sits one label deeper than the rules it groups with, so a
+    # registry adding `*.<region>.cs.example.com` per region is grouped under
+    # `cs.example.com` rather than once per region.
+    return (rule[2:] if rule.startswith('*.') else rule).split('.')
+
+
+def _patterns(rule):
+    labels = _labels(rule)
+    keys = []
+    if len(labels) > 1:
+        keys.append(('under', '.'.join(labels[1:])))
+    prefix = '*.' if rule.startswith('*.') else ''
+    for i in range(1, len(labels) - 1):
+        keys.append(('form', prefix + '.'.join(labels[:i] + ['<label>'] + labels[i + 1:])))
+    return keys
 
 
 def split_orphaned(removed):

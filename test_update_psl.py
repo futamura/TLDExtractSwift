@@ -117,6 +117,53 @@ class RenderEntryTest(unittest.TestCase):
             'The bundled Public Suffix List is refreshed. '
             'Added: 5 rules under `cs.example.com`.')
 
+    def test_collapses_rules_that_differ_only_in_a_middle_label(self):
+        # A registry adding one rule per region in the middle of the name gives
+        # every rule its own parent.
+        added = {'consent-portal.agentcore.r%d.amazonaws.com' % i for i in range(5)}
+        entry = update_psl.render_entry(added, set())
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. '
+            'Added: 5 rules of the form `consent-portal.agentcore.<label>.amazonaws.com`.')
+
+    def test_keeps_the_wildcard_in_a_middle_label_pattern(self):
+        added = {'*.airflow.r%d.on.aws' % i for i in range(5)}
+        entry = update_psl.render_entry(added, set())
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. '
+            'Added: 5 rules of the form `*.airflow.<label>.on.aws`.')
+
+    def test_does_not_treat_a_varying_top_level_label_as_a_pattern(self):
+        added = {'example.t%d' % i for i in range(5)}
+        entry = update_psl.render_entry(added, set())
+        self.assertNotIn('rules', entry)
+
+    def test_collapses_rules_spread_across_parents_under_one_domain(self):
+        added = {'kr.object.example.com', 'sg.object.example.com', 'kr.website.example.com',
+                 'kr-private.example.com', 's3-website.kr.object.example.com'}
+        entry = update_psl.render_entry(added, set())
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. '
+            'Added: 5 rules under `example.com`.')
+
+    def test_names_the_longest_suffix_a_domain_group_shares(self):
+        added = {'a.x.example.com', 'c.x.example.com', 'e.x.example.com',
+                 'b.y.x.example.com', 'd.z.x.example.com'}
+        entry = update_psl.render_entry(added, set())
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. '
+            'Added: 5 rules under `x.example.com`.')
+
+    def test_keeps_a_domain_group_below_the_threshold_expanded(self):
+        added = {'kr.object.example.com', 'sg.object.example.com', 'kr.website.example.com',
+                 'kr-private.example.com'}
+        entry = update_psl.render_entry(added, set())
+        self.assertNotIn('rules', entry)
+
     def test_reports_rules_a_new_wildcard_covers_as_replaced(self):
         entry = update_psl.render_entry({'*.example.dev'}, {'a.example.dev', 'b.example.dev'})
         self.assertEqual(
