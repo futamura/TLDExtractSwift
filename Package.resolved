@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/futamura/PunycodeSwift.git",
       "state" : {
-        "revision" : "3444734023611722a0be708cec4496798dfebefb",
-        "version" : "4.0.1"
+        "revision" : "01d1465a1ab47d7ba43ae573ba277a13538f852f",
+        "version" : "4.0.4"
       }
     }
   ],
