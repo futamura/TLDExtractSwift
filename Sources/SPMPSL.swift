@@ -7458,6 +7458,7 @@ barsy.ca
 *.compute.estate
 *.alces.network
 alibabacloudcs.com
+*.ztna-dingtalk.com
 ms.fun
 ms.show
 kasserver.com
@@ -9286,7 +9287,6 @@ futuremailing.at
 *.statics.cloud
 gadget.app
 gadget.host
-aliases121.com
 campaign.gov.uk
 service.gov.uk
 independent-commission.uk
@@ -9709,7 +9709,6 @@ uni5.net
 koobin.events
 webthings.io
 krellian.net
-oya.to
 co.de
 shiptoday.app
 shiptoday.build
