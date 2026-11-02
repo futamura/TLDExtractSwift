@@ -6628,7 +6628,6 @@ hdfcbank
 health
 healthcare
 help
-helsinki
 here
 hermes
 hiphop
