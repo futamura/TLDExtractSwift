@@ -5,6 +5,22 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [4.0.8] - 2026-11-23
+
+### Changed
+
+- The bundled Public Suffix List is refreshed. `juniper` is no longer a rule, and since it was a top-level rule there is no parent suffix to fall back to: `parse` now returns `nil` for hosts under it, such as `www.juniper`, instead of reporting `juniper` as their top-level domain.
+- The bundled Public Suffix List is refreshed. Added: 5 rules under `elasticbeanstalk.com`, `amazonlightsail.com` and a `*.<region>.cs.amazonlightsail.com` wildcard for 19 regions, `auth.ap-east-2.amazoncognito.com`, `auth.ap-southeast-6.amazoncognito.com`, `retool.app`. The 26 individual rules under `replit.dev`, and `replit.dev` itself, are replaced by the wildcards `*.replit.dev` and `*.teams.replit.dev`. Hosts under the former rules, such as `x.archer.replit.dev`, parse as before, but `replit.dev` is now a registrable domain under `dev`, and every label directly under it is a public suffix: `foo.replit.dev` now has no root domain, and `a.foo.replit.dev` is its own root domain.
+- The bundled Public Suffix List is refreshed. Added: `consent-portal.bedrock-agentcore.<region>.amazonaws.com` for 22 regions, 39 Naver Cloud object storage rules under `ncloudstorage.com`, `fin-ncloudstorage.com`, `gov-ncloudstorage.com`, `ncpstorage.com` and `ncloud.com` (such as `kr.object.ncloudstorage.com` and `s3-website.kr.object.ncloudstorage.com`), `*.airflow.ap-southeast-7.on.aws`, `transfer-webapp.ap-east-2.on.aws`, `transfer-webapp.ap-southeast-6.on.aws`, `transfer-webapp.eusc-de-east-1.on.amazonwebservices.eu`. Removed: `gitapp.si`, `knightpoint.systems`, `perspecta.cloud` — hosts under a removed rule now parse as registrable domains under its parent suffix.
+- The bundled Public Suffix List is refreshed. Added: `*.ztna-dingtalk.com`. Removed: `aliases121.com`, `oya.to` — hosts under a removed rule now parse as registrable domains under its parent suffix.
+- The bundled Public Suffix List is refreshed. Added: `*.apps.grok.bot`, `*.pages.grok.bot`, `abyme.dev`, `ad.vn`, `agilevibes.app`, `ap.vn`, `app.amba.host`, `apps.devs.ai`, `auth.lovable.app`, `bearly.sh`, `cdn.amba.host`, `ceero.site`, `cloud.modelence.app`, `cloudzyro.app`, `co.fo`, `com.fo`, `crbts.app`, `ddns.ge`, `dns.army`, `dns.navy`, `docsflowy.site`, `fn.amba.host`, `ginta.page`, `go.amba.host`, `gov.de`, `linkyhost.page`, `loc.cc`, `manus.space`, `medusajs.site`, `modelence.app`, `mymagic.page`, `myoxypages.com`, `ninjaneer-sites.com`, `omgs.page`, `on.vn`, `pagelemon.dev`, `prod.page`, `reliantlabs.dev`, `reliantpreview.dev`, `rwx.run`, `sail.box`, `sandbox.modelence.app`, `sanity.run`, `sanity.studio`, `ship.place`, `sites.reliantlabs.dev`, `sliplane.app`, `sm.run`, `space.fast`, `terramind.io`, `v6.army`, `v6.navy`, `v6.rocks`, `vibekit.page`, `view.fast`, `voati.host`, `wz.io`, `wz.org`, `xwx.me`. Removed: `imagine-proxy.work`, `imagine.diy` — hosts under a removed rule now parse as registrable domains under its parent suffix. Removed: `helsinki` — no parent suffix is left to fall back to, so `parse` now returns `nil` for hosts under it.
+
+### Fixed
+
+- `parse` now applies the longest matching rule, as the Public Suffix List specifies. It used to take the first matching wildcard in list order and to skip normal rules whenever a wildcard matched, so a host under a wildcard nested inside another one was parsed against the shorter rule whenever that rule came first: `y.x.teams.replit.dev` reported `teams.replit.dev` as its top-level domain instead of `x.teams.replit.dev`, and the same went for hosts under `*.r.cloud.int.apple`, which `*.cloud.int.apple` shadowed. The bundled list has no normal rule longer than a wildcard that matches it, so the second half changes nothing today. `quick: true` is unaffected, since it only ever consults normal rules.
+
 ## [4.0.7] - 2026-10-05
 
 ### Changed
@@ -162,7 +178,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release: extraction of root domain, top-level domain, second-level domain, and subdomain from URLs and hostnames using the Public Suffix List, with IDNA support.
 
-[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/4.0.7...HEAD
+[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/4.0.8...HEAD
+[4.0.8]: https://github.com/futamura/TLDExtractSwift/compare/4.0.7...4.0.8
 [4.0.7]: https://github.com/futamura/TLDExtractSwift/compare/4.0.6...4.0.7
 [4.0.6]: https://github.com/futamura/TLDExtractSwift/compare/4.0.5...4.0.6
 [4.0.5]: https://github.com/futamura/TLDExtractSwift/compare/4.0.4...4.0.5
