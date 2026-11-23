@@ -5898,7 +5898,9 @@ net.vi
 org.vi
 vn
 ac.vn
+ad.vn
 ai.vn
+ap.vn
 biz.vn
 com.vn
 edu.vn
@@ -5910,6 +5912,7 @@ int.vn
 io.vn
 name.vn
 net.vn
+on.vn
 org.vn
 pro.vn
 angiang.vn
@@ -6628,7 +6631,6 @@ hdfcbank
 health
 healthcare
 help
-helsinki
 here
 hermes
 hiphop
@@ -7418,6 +7420,7 @@ ltd.ua
 611.to
 a2hosted.com
 cpserver.com
+abyme.dev
 activetrail.biz
 myaddr.dev
 myaddr.io
@@ -7436,6 +7439,7 @@ adobeio-static.net
 adobeioruntime.net
 africa.com
 *.auiusercontent.com
+agilevibes.app
 beep.pl
 aiven.app
 *.aivencloud.com
@@ -8364,14 +8368,18 @@ transfer-webapp.cn-northwest-1.on.amazonwebservices.com.cn
 transfer-webapp.eusc-de-east-1.on.amazonwebservices.eu
 eero.online
 eero-stage.online
+app.amba.host
+cdn.amba.host
+fn.amba.host
+go.amba.host
 opentunnel.xyz
 antagonist.cloud
 claude.app
 claudeusercontent.com
 frame.claudeusercontent.com
-*.cursorusercontent.com
 apigee.io
 panel.dev
+apps.devs.ai
 siiites.com
 int.apple
 *.cloud.int.apple
@@ -8410,6 +8418,8 @@ myasustor.com
 *.atlassian-3p-us-gov-mod.com
 *.atlassian-isolated-3p.com
 cdn.prod.atlassian-dev.net
+space.fast
+view.fast
 myfritz.link
 myfritz.net
 *.awdev.ca
@@ -8429,13 +8439,16 @@ shopselect.net
 base.shop
 beagleboard.io
 bearblog.dev
+bearly.sh
 *.beget.app
 *.begetcdn.cloud
 pages.gay
 bnr.la
 bitbucket.io
+ship.place
 blackbaudcdn.net
 of.je
+prod.page
 square.site
 bluebite.io
 boomla.net
@@ -8461,6 +8474,7 @@ radio.am
 radio.fm
 cdn.bubble.io
 bubbleapps.io
+manus.space
 *.bwcloud-os-instance.de
 cafjs.com
 canva-apps.cn
@@ -8487,6 +8501,7 @@ cdn77-ssl.net
 c.cdn77.org
 rsc.cdn77.org
 ssl.origin.cdn77-secure.org
+ceero.site
 za.bz
 br.com
 cn.com
@@ -8574,6 +8589,7 @@ objects.lpg.cloudscale.ch
 objects.rma.cloudscale.ch
 lpg.objectstorage.ch
 rma.objectstorage.ch
+cloudzyro.app
 wnext.app
 cnpy.gdn
 *.otap.co
@@ -8620,6 +8636,7 @@ knx-server.net
 static-access.net
 craft.me
 realm.cz
+crbts.app
 cfolks.pl
 cyon.link
 cyon.site
@@ -8644,6 +8661,7 @@ dattoweb.com
 mydatto.com
 dattolocal.net
 mydatto.net
+ddns.ge
 ddnss.de
 dyn.ddnss.de
 dyndns.ddnss.de
@@ -8714,6 +8732,7 @@ dnshome.it
 dyn.now
 heimdns.online
 ddns.wtf
+docsflowy.site
 online.th
 shop.th
 co.scot
@@ -9033,7 +9052,12 @@ mywire.org
 roxa.org
 webredirect.org
 myddns.rocks
+dns.army
+v6.army
+dns.navy
+v6.navy
 dynv6.net
+v6.rocks
 e4.cz
 easypanel.app
 easypanel.host
@@ -9262,6 +9286,7 @@ freedesktop.org
 freemyip.com
 *.frusky.de
 wien.funkfeuer.at
+xwx.me
 daemon.asia
 dix.asia
 mydns.bz
@@ -9302,6 +9327,7 @@ gentapps.com
 gentlentapis.com
 cdn-edges.net
 gsj.bz
+ginta.page
 gitbook.io
 github.app
 githubusercontent.com
@@ -9446,6 +9472,7 @@ cloud.run
 ai.studio
 goupile.fr
 pymnt.uk
+gov.de
 gov.nl
 grafana-dev.net
 grayjayleagues.com
@@ -9519,8 +9546,6 @@ gr.com
 iki.fi
 ibxos.it
 iliadboxos.it
-imagine.diy
-imagine-proxy.work
 smushcdn.com
 wphostedmail.com
 wpmucdn.com
@@ -9739,6 +9764,7 @@ co.place
 co.technology
 linkyard-cloud.ch
 linkyard.cloud
+linkyhost.page
 members.linode.com
 *.nodebalancer.linode.com
 *.linodeobjects.com
@@ -9762,6 +9788,7 @@ loginline.services
 loginline.site
 lohmus.me
 lovable.app
+auth.lovable.app
 lovableproject.com
 lovable.run
 lovable.sh
@@ -9808,6 +9835,7 @@ barsyonline.co.uk
 luyani.app
 luyani.net
 *.magentosite.cloud
+mymagic.page
 magicpatterns.app
 magicpatternsapp.com
 hb.cldmail.ru
@@ -9824,6 +9852,7 @@ mediatech.by
 mediatech.dev
 hra.health
 medusajs.app
+medusajs.site
 miniserver.com
 memset.net
 messerli.app
@@ -9961,6 +9990,9 @@ mkm.fan
 mocha.app
 mochausercontent.com
 mocha-sandbox.dev
+modelence.app
+cloud.modelence.app
+sandbox.modelence.app
 modx.dev
 bmoattachments.org
 net.ru
@@ -10047,6 +10079,7 @@ ngrok.pro
 torun.pl
 nh-serv.co.uk
 nimsite.uk
+ninjaneer-sites.com
 mmafan.biz
 myftp.biz
 no-ip.biz
@@ -10188,6 +10221,7 @@ nerdpol.ovh
 prvcy.page
 observablehq.cloud
 static.observableusercontent.com
+omgs.page
 omg.lol
 cloudycluster.net
 omniwe.site
@@ -10244,7 +10278,9 @@ ownprovider.com
 own.pm
 *.owo.codes
 ox.rs
+myoxypages.com
 oy.lc
+pagelemon.dev
 pgfog.com
 gotpantheon.com
 pantheonsite.io
@@ -10330,10 +10366,14 @@ up.railway.app
 ravpage.co.il
 readthedocs-hosted.com
 readthedocs.io
+rwx.run
 rhcloud.com
 instances.spawn.cc
 *.clusters.rdpa.co
 *.srvrless.rdpa.co
+reliantlabs.dev
+sites.reliantlabs.dev
+reliantpreview.dev
 onrender.com
 app.render.com
 replit.app
@@ -10382,6 +10422,7 @@ xn--90a1af.xn--p1acf
 я.рус
 xn--41a.xn--p1acf
 ras.ru
+sail.box
 nyat.app
 180r.com
 dojin.com
@@ -10456,6 +10497,8 @@ sakura.tv
 *.we.crm.dev
 *.wf.crm.dev
 sandcats.io
+sanity.run
+sanity.studio
 sav.case
 logoip.com
 logoip.de
@@ -10545,6 +10588,10 @@ myshopify.com
 shopitsite.com
 shopware.shop
 shopware.store
+co.fo
+com.fo
+wz.io
+wz.org
 mo-siemens.io
 1kapp.com
 appchizi.com
@@ -10552,6 +10599,7 @@ applinzi.com
 sinaapp.com
 vipsinaapp.com
 siteleaf.net
+sliplane.app
 small-web.org
 aeroport.fr
 avocat.fr
@@ -10580,6 +10628,10 @@ my.at
 my.de
 *.nxa.eu
 nx.gw
+*.apps.grok.bot
+*.pages.grok.bot
+*.cursorusercontent.com
+grok.me
 spawnbase.app
 customer.speedpartner.de
 myspreadshop.at
@@ -10695,6 +10747,7 @@ telebit.app
 telebit.io
 *.telebit.xyz
 teleport.sh
+terramind.io
 *.firenet.ch
 *.svc.firenet.ch
 reservd.com
@@ -10775,16 +10828,19 @@ tmp.now
 vercel.run
 now.sh
 2038.io
+vibekit.page
 v-info.info
 vistablog.ir
 deus-canvas.com
 vivenushop.com
 vivenushop.dev
+voati.host
 voorloper.cloud
 *.vultrobjects.com
 wafflecell.com
 wal.app
 wasmer.app
+sm.run
 webflow.io
 webflowtest.io
 *.webhare.dev
@@ -10835,7 +10891,6 @@ raffleentry.org.uk
 weeklylottery.org.uk
 wpenginepowered.com
 js.wpenginepowered.com
-grok.me
 *.xenonconnect.de
 half.host
 cistron.nl
@@ -10848,6 +10903,7 @@ website.yandexcloud.net
 sourcecraft.site
 official.academy
 yolasite.com
+loc.cc
 ynh.fr
 nohost.me
 noho.st
