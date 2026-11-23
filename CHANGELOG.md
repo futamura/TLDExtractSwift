@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.0] - 2026-11-23
+
 ### Changed
 
 - **Breaking:** Raised the minimum deployment targets to macOS 12, iOS 15, tvOS 15 and watchOS 9 (visionOS stays at 1.0). These are the lowest versions Xcode 27 builds for. Apps that need the older targets can stay on 4.x.
@@ -183,7 +185,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release: extraction of root domain, top-level domain, second-level domain, and subdomain from URLs and hostnames using the Public Suffix List, with IDNA support.
 
-[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/4.0.8...HEAD
+[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/5.0.0...HEAD
+[5.0.0]: https://github.com/futamura/TLDExtractSwift/compare/4.0.8...5.0.0
 [4.0.8]: https://github.com/futamura/TLDExtractSwift/compare/4.0.7...4.0.8
 [4.0.7]: https://github.com/futamura/TLDExtractSwift/compare/4.0.6...4.0.7
 [4.0.6]: https://github.com/futamura/TLDExtractSwift/compare/4.0.5...4.0.6
