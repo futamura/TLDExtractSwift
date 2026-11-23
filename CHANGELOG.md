@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The bundled Public Suffix List is refreshed. Added: `*.2na.am`, `*.prairielearn-user-content.com`, `fastedge.app`, `fj.kg`, `gcorecdn.com`, `kliv.site`, `kz.ci`, `mailerpage.io`, `nippy.site`, `prod.enter.pro`, `pvf.cc`, `solidres.page`, `staging.wordsmithmcpcontent.com`, `subscribepage.io`, `uncld.dev`, `wordsmithmcpcontent.com`, `xyz.ci`. Removed: `xihuan` — no parent suffix is left to fall back to, so `parse` now returns `nil` for hosts under it.
+
 ## [5.0.0] - 2026-11-23
 
 ### Changed

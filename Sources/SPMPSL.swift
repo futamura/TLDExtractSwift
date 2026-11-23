@@ -7207,7 +7207,6 @@ wtc
 wtf
 xbox
 xerox
-xihuan
 xin
 कॉम
 xn--11b4c3d
@@ -8612,6 +8611,7 @@ prvw.eu
 hosting-cluster.nl
 site.hosting-cluster.nl
 ctfcloud.net
+prod.enter.pro
 convex.app
 convex.cloud
 eu-west-1.convex.cloud
@@ -9283,6 +9283,9 @@ fbxos.fr
 freebox-os.fr
 freeboxos.fr
 freedesktop.org
+pvf.cc
+kz.ci
+xyz.ci
 freemyip.com
 *.frusky.de
 wien.funkfeuer.at
@@ -9312,6 +9315,8 @@ futuremailing.at
 *.statics.cloud
 gadget.app
 gadget.host
+fastedge.app
+gcorecdn.com
 campaign.gov.uk
 service.gov.uk
 independent-commission.uk
@@ -9731,6 +9736,7 @@ kiloapps.ai
 kiloapps.io
 kinghost.net
 uni5.net
+kliv.site
 koobin.events
 webthings.io
 krellian.net
@@ -9839,6 +9845,8 @@ mymagic.page
 magicpatterns.app
 magicpatternsapp.com
 hb.cldmail.ru
+mailerpage.io
+subscribepage.io
 matlab.cloud
 modelscape.com
 mwcloudnonprod.com
@@ -10080,6 +10088,7 @@ torun.pl
 nh-serv.co.uk
 nimsite.uk
 ninjaneer-sites.com
+nippy.site
 mmafan.biz
 myftp.biz
 no-ip.biz
@@ -10312,8 +10321,14 @@ postman-echo.com
 pstmn.io
 mock.pstmn.io
 httpbin.org
+*.prairielearn-user-content.com
 prequalifyme.today
 xen.prgmr.com
+ec.cc
+eu.cc
+gu.cc
+uk.cc
+us.cc
 priv.at
 c01.kr
 eliv-api.kr
@@ -10619,6 +10634,7 @@ streamlitapp.com
 try-snowplow.com
 mafelo.net
 sol.site
+solidres.page
 playstation-cloud.com
 srht.site
 apps.lair.io
@@ -10736,11 +10752,6 @@ p.tawkto.email
 tche.br
 site.tb-hosting.com
 directwp.eu
-ec.cc
-eu.cc
-gu.cc
-uk.cc
-us.cc
 edugit.io
 s3.teckids.org
 telebit.app
@@ -10792,6 +10803,7 @@ lima.zone
 site.transip.me
 *.transurl.nl
 *.triton.zone
+*.2na.am
 tunnelmole.net
 tuxfamily.org
 typedream.app
@@ -10803,6 +10815,7 @@ ltd.hk
 hk.org
 it.com
 umso.co
+uncld.dev
 unison-services.cloud
 virtual-user.de
 virtualuser.de
@@ -10889,6 +10902,8 @@ meinforum.net
 affinitylottery.org.uk
 raffleentry.org.uk
 weeklylottery.org.uk
+wordsmithmcpcontent.com
+staging.wordsmithmcpcontent.com
 wpenginepowered.com
 js.wpenginepowered.com
 *.xenonconnect.de
@@ -10911,6 +10926,7 @@ za.net
 za.org
 zap.cloud
 zeabur.app
+fj.kg
 *.zerops.app
 prg1-zerops.zone
 *.zerops.zone
