@@ -43,10 +43,10 @@ Domain names are the unique, human-readable Internet addresses of websites. They
 
 ## Requirements
 
-- macOS 10.13 or later
-- iOS 12.0 or later
-- tvOS 12.0 or later
-- watchOS 4.0 or later
+- macOS 12.0 or later
+- iOS 15.0 or later
+- tvOS 15.0 or later
+- watchOS 9.0 or later
 - visionOS 1.0 or later
 - Linux (SPM builds)
 - Swift 5.9 or later (Xcode 15 or later) for Swift Package Manager
@@ -62,7 +62,15 @@ Swift Package Manager is the recommended way to install TLDExtractSwift.
 
 Add the following to your `Package.swift` file.
 
-- macOS, iOS, tvOS, watchOS, visionOS, Linux, and Swift 5.9 (Xcode 15) or later
+- macOS 12, iOS 15, tvOS 15, watchOS 9, visionOS 1, Linux, and Swift 5.9 (Xcode 15) or later
+
+    ```swift
+    dependencies: [
+        .package(url: "https://github.com/futamura/TLDExtractSwift.git", .upToNextMajor(from: "5.0.0"))
+    ]
+    ```
+
+- macOS 10.13, iOS 12, tvOS 12, watchOS 4, visionOS 1, Linux, and Swift 5.9 (Xcode 15) or later
 
     ```swift
     dependencies: [
@@ -93,7 +101,13 @@ Add the following to your `Package.swift` file.
 
 Add the following to your `Cartfile` and follow [these instructions](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
-- macOS, iOS, tvOS, watchOS, visionOS, and Swift 5.9 or later
+- macOS 12, iOS 15, tvOS 15, watchOS 9, visionOS 1, and Swift 5.9 or later
+
+    ```
+    github "futamura/TLDExtractSwift" ~> 5.0
+    ```
+
+- macOS 10.13, iOS 12, tvOS 12, watchOS 4, visionOS 1, and Swift 5.9 or later
 
     ```
     github "futamura/TLDExtractSwift" ~> 4.0

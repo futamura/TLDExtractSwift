@@ -84,105 +84,67 @@ end
 # Test
 ##########################################
 
+# Simulator device names change with every Xcode release, so pick an available
+# device at runtime (newest runtime first) instead of hardcoding names that rot.
+# Mirrors the device resolution in .github/workflows/main.yml.
+def available_simulator(runtime_pattern, device_prefix)
+    require "json"
+    devices = JSON.parse(sh("xcrun", "simctl", "list", "devices", "available", "-j", log: false))["devices"]
+    runtimes = devices.keys.grep(runtime_pattern).sort_by { |key| key.scan(/\d+/).map(&:to_i) }.reverse
+    runtimes.each do |runtime|
+        device = devices[runtime].find { |d| d["name"].start_with?(device_prefix) }
+        return device["name"] if device
+    end
+    nil
+end
+
 desc "Run all tests"
 lane :tests do
     xcclean
 
-    desc "Run macOS Tests"
-    run_tests(
-        destination: "platform=macOS",
-        scheme: scheme,
-        force_quit_simulator: true,
-        reset_simulator: true,
-        prelaunch_simulator: false,
-        code_coverage: true,
-        open_report: false,
-        output_files: "report-macos.html,report-macos.junit"
-    )
-    slather(
-        scheme: scheme,
-        proj: xcodeproj_file,
-        output_directory: "./fastlane/reports/macOS",
-        html: true,
-        show: false
-    )
+    targets = [
+        { name: "macOS", destination: "platform=macOS" },
+        { name: "iOS", platform: "iOS", runtime: /SimRuntime\.iOS-/, prefix: "iPhone" },
+        { name: "tvOS", platform: "tvOS", runtime: /SimRuntime\.tvOS-/, prefix: "Apple TV" },
+        { name: "watchOS", platform: "watchOS", runtime: /SimRuntime\.watchOS-/, prefix: "Apple Watch" },
+        { name: "visionOS", platform: "visionOS", runtime: /SimRuntime\.(xrOS|visionOS)-/, prefix: "Apple Vision" },
+    ]
+    skipped = []
 
-    desc "Run iOS Tests"
-    run_tests(
-        destination: "platform=iOS Simulator,name=iPhone 15 Pro",
-        scheme: scheme,
-        force_quit_simulator: true,
-        reset_simulator: true,
-        prelaunch_simulator: false,
-        code_coverage: true,
-        open_report: false,
-        output_files: "report-ios.html,report-ios.junit"
-    )
-    slather(
-        scheme: scheme,
-        proj: xcodeproj_file,
-        output_directory: "./fastlane/reports/iOS",
-        html: true,
-        show: false
-    )
+    targets.each do |target|
+        destination = target[:destination]
+        if destination.nil? then
+            device = available_simulator(target[:runtime], target[:prefix])
+            if device.nil? then
+                UI.important("Skipping #{target[:name]} tests: no available #{target[:prefix]} simulator. Install the runtime from Xcode > Settings > Components.")
+                skipped << target[:name]
+                next
+            end
+            destination = "platform=#{target[:platform]} Simulator,name=#{device}"
+        end
 
-    desc "Run tvOS Tests"
-    run_tests(
-        destination: "platform=tvOS Simulator,name=Apple TV 4K (3rd generation)",
-        scheme: scheme,
-        force_quit_simulator: true,
-        reset_simulator: true,
-        prelaunch_simulator: false,
-        code_coverage: true,
-        open_report: false,
-        output_files: "report-tvos.html,report-tvos.junit"
-    )
-    slather(
-        scheme: scheme,
-        proj: xcodeproj_file,
-        output_directory: "./fastlane/reports/tvOS",
-        html: true,
-        show: false
-    )
+        UI.header("Run #{target[:name]} Tests (#{destination})")
+        report = target[:name].downcase
+        run_tests(
+            destination: destination,
+            scheme: scheme,
+            force_quit_simulator: true,
+            reset_simulator: true,
+            prelaunch_simulator: false,
+            code_coverage: true,
+            open_report: false,
+            output_files: "report-#{report}.html,report-#{report}.junit"
+        )
+        slather(
+            scheme: scheme,
+            proj: xcodeproj_file,
+            output_directory: "./fastlane/reports/#{target[:name]}",
+            html: true,
+            show: false
+        )
+    end
 
-    desc "Run watchOS Tests"
-    run_tests(
-        destination: "platform=watchOS Simulator,name=Apple Watch Series 9 (45mm)",
-        scheme: scheme,
-        force_quit_simulator: true,
-        reset_simulator: true,
-        prelaunch_simulator: false,
-        code_coverage: true,
-        open_report: false,
-        output_files: "report-watchos.html,report-watchos.junit"
-    )
-    slather(
-        scheme: scheme,
-        proj: xcodeproj_file,
-        output_directory: "./fastlane/reports/watchOS",
-        html: true,
-        show: false
-    )
-
-    desc "Run visionOS Tests"
-    run_tests(
-        destination: "platform=visionOS Simulator,name=Apple Vision Pro",
-        scheme: scheme,
-        force_quit_simulator: true,
-        reset_simulator: true,
-        prelaunch_simulator: false,
-        code_coverage: true,
-        open_report: false,
-        output_files: "report-visionos.html,report-visionos.junit"
-    )
-    slather(
-        scheme: scheme,
-        proj: xcodeproj_file,
-        output_directory: "./fastlane/reports/visionOS",
-        html: true,
-        show: false
-    )
-
+    UI.important("Skipped platforms: #{skipped.join(", ")}") unless skipped.empty?
 end
 
 ##########################################
