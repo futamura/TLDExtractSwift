@@ -99,7 +99,9 @@ def summarize_rules(rules):
     # one they share a parent; when it sits further in, as with
     # `consent-portal.<region>.example.com`, every rule has its own parent and only
     # the pattern ties them together. The top-level label is never the varying
-    # one: rules under different TLDs have nothing in common worth naming.
+    # one: rules under different TLDs have nothing in common worth naming. Nor
+    # is it ever the shared parent: nearly every `.app` rule sits under `app`,
+    # so "5 rules under `app`" would hide the names and say nothing.
     patterns = {}
     for rule in remaining:
         for key in _patterns(rule):
@@ -150,7 +152,7 @@ def _labels(rule):
 def _patterns(rule):
     labels = _labels(rule)
     keys = []
-    if len(labels) > 1:
+    if len(labels) > 2:
         keys.append(('under', '.'.join(labels[1:])))
     prefix = '*.' if rule.startswith('*.') else ''
     for i in range(1, len(labels) - 1):
