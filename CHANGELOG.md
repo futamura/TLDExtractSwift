@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking:** Raised the minimum deployment targets to macOS 12, iOS 15, tvOS 15 and watchOS 9 (visionOS stays at 1.0). These are the lowest versions Xcode 27 builds for. Apps that need the older targets can stay on 4.x.
+- Requires PunycodeSwift 5.0.0 or later, which raised its minimum deployment targets to the same versions.
+
 ## [4.0.8] - 2026-11-23
 
 ### Changed
