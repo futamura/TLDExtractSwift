@@ -140,6 +140,22 @@ class RenderEntryTest(unittest.TestCase):
         entry = update_psl.render_entry(added, set())
         self.assertNotIn('rules', entry)
 
+    def test_does_not_collapse_rules_directly_under_a_top_level_label(self):
+        added = {'agilevibes.app', 'cloudzyro.app', 'crbts.app', 'modelence.app',
+                 'sliplane.app', '*.vibes.app'}
+        entry = update_psl.render_entry(added, set())
+        self.assertEqual(
+            entry,
+            'The bundled Public Suffix List is refreshed. '
+            'Added: `*.vibes.app`, `agilevibes.app`, `cloudzyro.app`, `crbts.app`, '
+            '`modelence.app`, `sliplane.app`.')
+
+    def test_does_not_collapse_removed_rules_directly_under_a_top_level_label(self):
+        removed = {'r%d.page' % i for i in range(5)}
+        entry = update_psl.render_entry(set(), removed)
+        self.assertNotIn('rules under', entry)
+        self.assertIn('`r0.page`', entry)
+
     def test_collapses_rules_spread_across_parents_under_one_domain(self):
         added = {'kr.object.example.com', 'sg.object.example.com', 'kr.website.example.com',
                  'kr-private.example.com', 's3-website.kr.object.example.com'}
