@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.8] - 2026-11-23
+
 ### Changed
 
 - The bundled Public Suffix List is refreshed. `juniper` is no longer a rule, and since it was a top-level rule there is no parent suffix to fall back to: `parse` now returns `nil` for hosts under it, such as `www.juniper`, instead of reporting `juniper` as their top-level domain.
@@ -176,7 +178,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release: extraction of root domain, top-level domain, second-level domain, and subdomain from URLs and hostnames using the Public Suffix List, with IDNA support.
 
-[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/4.0.7...HEAD
+[Unreleased]: https://github.com/futamura/TLDExtractSwift/compare/4.0.8...HEAD
+[4.0.8]: https://github.com/futamura/TLDExtractSwift/compare/4.0.7...4.0.8
 [4.0.7]: https://github.com/futamura/TLDExtractSwift/compare/4.0.6...4.0.7
 [4.0.6]: https://github.com/futamura/TLDExtractSwift/compare/4.0.5...4.0.6
 [4.0.5]: https://github.com/futamura/TLDExtractSwift/compare/4.0.4...4.0.5
